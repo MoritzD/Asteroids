@@ -147,6 +147,7 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glPushMatrix();
         planetEarth.draw();
         Gdx.gl11.glPopMatrix();
+        dodo.draw();
 
 
 
