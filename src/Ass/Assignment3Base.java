@@ -2,6 +2,7 @@ package Ass;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL11;
 
 
@@ -18,7 +19,7 @@ public class Assignment3Base implements ApplicationListener
         // TODO Auto-generated method stub
         Gdx.gl11.glEnable(GL11.GL_LIGHTING);
         Gdx.gl11.glEnable(GL11.GL_LIGHT0);
-        Gdx.gl11.glEnable(GL11.GL_LIGHT1);
+        //Gdx.gl11.glEnable(GL11.GL_LIGHT1);
         Gdx.gl11.glEnable(GL11.GL_DEPTH_TEST);
 
         Gdx.gl11.glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
@@ -29,7 +30,7 @@ public class Assignment3Base implements ApplicationListener
 
 
         camFirstPerson = new Camera();
-        camFirstPerson.lookAt(new Point3D(0.0f, 1.0f, 2.0f), new Point3D(0.0f, 1.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+        camFirstPerson.lookAt(new Point3D(0.0f, 0.0f, 1.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 40.0f);
 
         camThirdPerson = new Camera();
@@ -62,14 +63,69 @@ public class Assignment3Base implements ApplicationListener
     {
         float deltaTime = Gdx.graphics.getDeltaTime();
 
+        if(Gdx.input.isKeyPressed(Input.Keys.UP))
+        {
+            camFirstPerson.pitch(-90.0f * deltaTime);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+        {
+            camFirstPerson.pitch(90.0f * deltaTime);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        {
+            camFirstPerson.yaw(-90.0f * deltaTime);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        {
+            camFirstPerson.yaw(90.0f * deltaTime);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.W))
+        {
+            camFirstPerson.slide(0.0f, 0.0f, -10.0f * deltaTime);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S))
+        {
+            camFirstPerson.slide(0.0f, 0.0f, 10.0f * deltaTime);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A))
+        {
+            camFirstPerson.slide(-10.0f * deltaTime, 0.0f, 0.0f);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D))
+        {
+            camFirstPerson.slide(10.0f * deltaTime, 0.0f, 0.0f);
+        }
+
+
+        if(Gdx.input.isKeyPressed(Input.Keys.R))
+        {
+            camFirstPerson.slide(0.0f, 10.0f * deltaTime, 0.0f);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.F))
+        {
+            camFirstPerson.slide(0.0f, -10.0f * deltaTime, 0.0f);
+        }
+
     }
 
     private void display()
     {
-       // Gdx.gl11.glPushMatrix();
+        Gdx.gl11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+
+        camFirstPerson.setMatrices();
+        float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
+        Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse, 0);
+
+        float[] lightPosition = {5.0f, 10.0f, 15.0f, 1.0f};
+        Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
+
+        float[] materialDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
+        Gdx.gl11.glPushMatrix();
        // Gdx.gl11.glTranslatef(1.0f, 1.0f, 1.0f);
+        Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
         hex.draw();
-       // Gdx.gl11.glPopMatrix();
+        Gdx.gl11.glPopMatrix();
     }
 
     @Override
