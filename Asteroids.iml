@@ -10,39 +10,13 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-backend-lwjgl.jar!/" />
+          <root url="file://$MODULE_DIR$/libs/libgdx" />
         </CLASSES>
-        <JAVADOC />
+        <JAVADOC>
+          <root url="file://$MODULE_DIR$/libs/libgdx/docs/api" />
+        </JAVADOC>
         <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-backend-lwjgl-natives.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="jar://$MODULE_DIR$/libs/gdx-backend-lwjgl-natives.jar!/" recursive="false" />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/gdx-natives.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="jar://$MODULE_DIR$/libs/gdx-natives.jar!/" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/libs/libgdx" recursive="false" />
       </library>
     </orderEntry>
   </component>
