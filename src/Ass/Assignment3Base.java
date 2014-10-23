@@ -14,6 +14,7 @@ public class Assignment3Base implements ApplicationListener
     Hexagon hex;
     Hexagon hex2;
     Hexagon hex3;
+    Pentagon pen;
     Box bo;
 
     @Override
@@ -44,6 +45,7 @@ public class Assignment3Base implements ApplicationListener
         hex = new Hexagon();
         hex2 = new Hexagon();
         hex3 = new Hexagon();
+        pen = new Pentagon();
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
 
@@ -69,7 +71,7 @@ public class Assignment3Base implements ApplicationListener
 
     private void update()
     {
-        float deltaTime = Gdx.graphics.getDeltaTime();
+        float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
@@ -146,7 +148,6 @@ public class Assignment3Base implements ApplicationListener
             hex.draw();
             Gdx.gl11.glPopMatrix();
         }
-        */
         for(int angle = 0; angle < 360 ; angle +=60) {
             Gdx.gl11.glPushMatrix();
             //Gdx.gl11.glTranslatef((float) Math.sin(i) * 0.74998f, 0.0f, (float) Math.cos(i) * 0.74998f);
@@ -166,7 +167,55 @@ public class Assignment3Base implements ApplicationListener
             hex.draw();
 
             Gdx.gl11.glPopMatrix();
+
+
+    }
+        */
+        Gdx.gl11.glPushMatrix();
+
+        Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
+        pen.draw();
+
+        Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
+
+        for(int angle = 0; angle < 360 ; angle +=72) {
+            Gdx.gl11.glPushMatrix();
+            Gdx.gl11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
+            //Gdx.gl11.glTranslatef(0.0f, 1.6f, 0.0f);
+
+            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+            Gdx.gl11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
+
+            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+            pen.draw();
+            Gdx.gl11.glPopMatrix();
         }
+        Gdx.gl11.glPopMatrix();
+
+        Gdx.gl11.glPushMatrix();
+
+
+        Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
+        Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.62f);
+        Gdx.gl11.glRotatef(180, 1.0f, 0.0f, 0.0f);
+
+        pen.draw();
+
+        Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
+        for(int angle = 0; angle < 360 ; angle +=72) {
+            Gdx.gl11.glPushMatrix();
+            Gdx.gl11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
+            //Gdx.gl11.glTranslatef(0.0f, 1.4f, 0.0f);
+
+            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+            Gdx.gl11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
+
+            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f);
+            pen.draw();
+            Gdx.gl11.glPopMatrix();
+        }
+        Gdx.gl11.glPopMatrix();
+
 
     }
 

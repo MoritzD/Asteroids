@@ -37,7 +37,7 @@ public class Pentagon {
                 circleVertexBuffer.put(0.0f);
                 circleVertexBuffer.put(0.0f);
                 circleVertexBuffer.put(0.0f);
-                for (double i = ((2 * Math.PI)) / 5; i < (2 * Math.PI); i += ((2 * Math.PI)) / 5) {
+                for (double i = ((2 * Math.PI)) / 5; i <= (2 * Math.PI); i += ((2 * Math.PI)) / 5) {
                     circleVertexBuffer.put((float) Math.sin(i));
                     circleVertexBuffer.put((float) Math.cos(i));
                     circleVertexBuffer.put(0.0f);
