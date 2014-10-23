@@ -2,7 +2,6 @@ package Ass;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL11;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -11,16 +10,10 @@ import java.nio.FloatBuffer;
  */
 public class Hexagon {
 
-        int stacks;
-        int slices;
-        FloatBuffer vertexBuffer;
-        FloatBuffer normalBuffer;
-    FloatBuffer texCoordBuffer;
+
     private static FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
     boolean vertexExists = false;
-        Texture tex;
 
-        int vertexCount;
         public Hexagon()
         {
             if(!vertexExists) {

@@ -79,11 +79,11 @@ public class Assignment3Base implements ApplicationListener
         {
             camFirstPerson.pitch(90.0f * deltaTime);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
             camFirstPerson.yaw(-90.0f * deltaTime);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {
             camFirstPerson.yaw(90.0f * deltaTime);
         }
@@ -161,7 +161,8 @@ public class Assignment3Base implements ApplicationListener
             Gdx.gl11.glPushMatrix();
             //Gdx.gl11.glTranslatef((float) Math.sin(i) * 0.74998f, 0.0f, (float) Math.cos(i) * 0.74998f);
             Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
-            Gdx.gl11.glTranslatef(0.0f,0.0f,-1.5f);
+            Gdx.gl11.glRotatef(45, 1.0f, 0.0f, 0.0f);
+            Gdx.gl11.glTranslatef(0.0f,0.0f,-1.65f);
             hex.draw();
             Gdx.gl11.glPopMatrix();
         }
