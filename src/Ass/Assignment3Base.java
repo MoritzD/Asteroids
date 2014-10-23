@@ -164,6 +164,7 @@ public class Assignment3Base implements ApplicationListener
             Gdx.gl11.glRotatef(45, 1.0f, 0.0f, 0.0f);
             Gdx.gl11.glTranslatef(0.0f,0.0f,-1.65f);
             hex.draw();
+
             Gdx.gl11.glPopMatrix();
         }
 
