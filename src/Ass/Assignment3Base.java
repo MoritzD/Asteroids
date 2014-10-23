@@ -48,10 +48,11 @@ public class Assignment3Base implements ApplicationListener
         hex3 = new Hexagon();
         dodo = new Dodecahedron();
         planetEarth = new Sphere(12, 24);
-        planetEarth.setTexture("textures/earth_texture1024x512.png");
+        planetEarth.setTexture("Textures/earth_texture1024x512.png");
         planetEarth.setPosition(0,0,-30);
         planetEarth.scale(10,10,10);
 
+        dodo = new Dodecahedron();
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
 
@@ -148,7 +149,6 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glPushMatrix();
         planetEarth.draw();
         Gdx.gl11.glPopMatrix();
-        Gdx.gl11.glScalef(0.5f,0.5f,0.5f);
         dodo.draw();
 
 
