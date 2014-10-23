@@ -16,42 +16,45 @@ public class Hexagon {
         FloatBuffer vertexBuffer;
         FloatBuffer normalBuffer;
     FloatBuffer texCoordBuffer;
-    FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
-            int e;
+    private static FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
+    boolean vertexExists = false;
         Texture tex;
 
         int vertexCount;
         public Hexagon()
         {
-            int e;
+            if(!vertexExists) {
 
-            //tex = new Texture(Gdx.files.internal("assets/textures/star01.bmp"));
 
-            //stacks = i_stacks;
-            //slices = i_slices;
-            //vertexCount = 0;
-            //float[] array = new float[(stacks) * (slices + 1) * 6];
-            //float stackInterval = (float) Math.PI / (float) stacks;
-            //float sliceInterval = 2.0f * (float) Math.PI / (float) slices;
+                //tex = new Texture(Gdx.files.internal("assets/textures/star01.bmp"));
 
-            //float[] texArray = new float[(stacks) * (slices + 1) * 4];
+                //stacks = i_stacks;
+                //slices = i_slices;
+                //vertexCount = 0;
+                //float[] array = new float[(stacks) * (slices + 1) * 6];
+                //float stackInterval = (float) Math.PI / (float) stacks;
+                //float sliceInterval = 2.0f * (float) Math.PI / (float) slices;
 
-            //float stackAngle, sliceAngle;
+                //float[] texArray = new float[(stacks) * (slices + 1) * 4];
 
-           // FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
-            circleVertexBuffer.put(0.0f);
-            circleVertexBuffer.put(0.0f);
-            circleVertexBuffer.put(0.0f);
-            for (double i=((2*Math.PI))/6;i<(2*Math.PI);i+=((2*Math.PI))/6){
-                circleVertexBuffer.put((float) Math.sin(i));
-                circleVertexBuffer.put((float) Math.cos(i));
+                //float stackAngle, sliceAngle;
+
+                // FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
                 circleVertexBuffer.put(0.0f);
-            }
-            circleVertexBuffer.put((float) Math.sin(((2*Math.PI))/6));
-            circleVertexBuffer.put((float) Math.cos(((2*Math.PI))/6));
-            circleVertexBuffer.put(0.0f);
-            circleVertexBuffer.rewind();
+                circleVertexBuffer.put(0.0f);
+                circleVertexBuffer.put(0.0f);
+                for (double i = ((2 * Math.PI)) / 6; i < (2 * Math.PI); i += ((2 * Math.PI)) / 6) {
+                    circleVertexBuffer.put((float) Math.sin(i));
+                    circleVertexBuffer.put((float) Math.cos(i));
+                    circleVertexBuffer.put(0.0f);
+                }
+                circleVertexBuffer.put((float) Math.sin(((2 * Math.PI)) / 6));
+                circleVertexBuffer.put((float) Math.cos(((2 * Math.PI)) / 6));
+                circleVertexBuffer.put(0.0f);
+                circleVertexBuffer.rewind();
 
+                vertexExists = true;
+            }
 
         }
 
