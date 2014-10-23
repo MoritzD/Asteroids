@@ -10,6 +10,7 @@ public class Assignment3Base implements ApplicationListener
     Camera camFirstPerson;
     Camera camTopDown;
     Camera camThirdPerson;
+    Hexagon hex;
 
 
     @Override
@@ -37,6 +38,8 @@ public class Assignment3Base implements ApplicationListener
         camTopDown = new Camera();
         camTopDown.perspective(40.0f, 1.777778f, 5.0f, 20.0f);
 
+        hex = new Hexagon();
+
 
 
 
@@ -63,7 +66,10 @@ public class Assignment3Base implements ApplicationListener
 
     private void display()
     {
-
+       // Gdx.gl11.glPushMatrix();
+       // Gdx.gl11.glTranslatef(1.0f, 1.0f, 1.0f);
+        hex.draw();
+       // Gdx.gl11.glPopMatrix();
     }
 
     @Override
