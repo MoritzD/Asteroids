@@ -137,12 +137,31 @@ public class Assignment3Base implements ApplicationListener
         //hex.draw();
         Gdx.gl11.glPopMatrix();
 
-        Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
-
+        //Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
+/*
         for (double i = ((2 * Math.PI)) / 6; i < (2 * Math.PI); i += ((2 * Math.PI)) / 6) {
             Gdx.gl11.glPushMatrix();
-            Gdx.gl11.glRotatef(47,0.0f,1.0f,0.0f);
-            Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.0f);
+            Gdx.gl11.glTranslatef((float) Math.sin(i)*0.74998f, 0.0f,(float) Math.cos(i)*0.74998f);
+            Gdx.gl11.glRotatef(60,0.0f,1.0f,0.0f);
+            hex.draw();
+            Gdx.gl11.glPopMatrix();
+        }
+        */
+        for(int angle = 0; angle < 360 ; angle +=60) {
+            Gdx.gl11.glPushMatrix();
+            //Gdx.gl11.glTranslatef((float) Math.sin(i) * 0.74998f, 0.0f, (float) Math.cos(i) * 0.74998f);
+            Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+            Gdx.gl11.glTranslatef(0.0f,0.0f,-1.5f);
+            hex.draw();
+            Gdx.gl11.glPopMatrix();
+        }
+        Gdx.gl11.glRotatef(30, 0.0f, 1.0f, 0.0f);
+
+        for(int angle = 0; angle < 360 ; angle +=60) {
+            Gdx.gl11.glPushMatrix();
+            //Gdx.gl11.glTranslatef((float) Math.sin(i) * 0.74998f, 0.0f, (float) Math.cos(i) * 0.74998f);
+            Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+            Gdx.gl11.glTranslatef(0.0f,0.0f,-1.5f);
             hex.draw();
             Gdx.gl11.glPopMatrix();
         }
