@@ -12,6 +12,8 @@ public class Assignment3Base implements ApplicationListener
     Camera camTopDown;
     Camera camThirdPerson;
     Hexagon hex;
+    Hexagon hex2;
+    Hexagon hex3;
     Box bo;
 
     @Override
@@ -40,6 +42,8 @@ public class Assignment3Base implements ApplicationListener
         camTopDown.perspective(40.0f, 1.777778f, 5.0f, 20.0f);
 
         hex = new Hexagon();
+        hex2 = new Hexagon();
+        hex3 = new Hexagon();
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
 
@@ -123,15 +127,26 @@ public class Assignment3Base implements ApplicationListener
         float[] lightPosition = {5.0f, 10.0f, 15.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
 
-        bo.draw();
+        //bo.draw();
 
         Gdx.gl11.glPushMatrix();
         float[] materialDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
-       // Gdx.gl11.glTranslatef(1.0f, 1.0f, 1.0f);
+        Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.0f);
         //Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
-        hex.draw();
+        //hex.draw();
         Gdx.gl11.glPopMatrix();
+
+        Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
+
+        for (double i = ((2 * Math.PI)) / 6; i < (2 * Math.PI); i += ((2 * Math.PI)) / 6) {
+            Gdx.gl11.glPushMatrix();
+            Gdx.gl11.glRotatef(47,0.0f,1.0f,0.0f);
+            Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.0f);
+            hex.draw();
+            Gdx.gl11.glPopMatrix();
+        }
+
     }
 
     @Override
