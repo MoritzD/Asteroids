@@ -22,12 +22,13 @@ public class Sphere {
         boolean vertexExists = false;
         private Texture tex;
         private Point3D position = new Point3D(0,0,0);
+        private Point3D scale = new Point3D(0,0,0);
 
-        public Sphere(int i_stacks, int i_slices,String fileLocation)
+        public Sphere(int i_stacks, int i_slices)
         {
             if(!vertexExists) {
 
-                tex = new Texture(Gdx.files.internal(fileLocation));
+
                 stacks = i_stacks;
                 slices = i_slices;
                 vertexCount = 0;
@@ -81,6 +82,11 @@ public class Sphere {
              position.z=(float)z;
 
         }
+        public void scale(float x, float y, float z){
+            scale.x = x;
+            scale.y = y;
+            scale.z = z;
+        }
 
 
         public void draw()
@@ -96,6 +102,7 @@ public class Sphere {
             Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
             tex.bind();
             Gdx.gl11.glTranslatef(position.x, position.y,  position.z);
+            Gdx.gl11.glScalef(scale.x,scale.y,scale.z);
             for(int i = 0; i < vertexCount; i += (slices+1)*2)
             {
                 Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, i, (slices+1)*2);
@@ -105,6 +112,11 @@ public class Sphere {
             Gdx.gl11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
         }
 
+    public void setTexture(String fileLocation) {
+
+        tex = new Texture(Gdx.files.internal(fileLocation));
+
     }
+}
 
 
