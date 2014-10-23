@@ -17,12 +17,14 @@ public class Hexagon {
         FloatBuffer normalBuffer;
     FloatBuffer texCoordBuffer;
     FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
-
+            int e;
         Texture tex;
 
         int vertexCount;
         public Hexagon()
         {
+            int e;
+
             //tex = new Texture(Gdx.files.internal("assets/textures/star01.bmp"));
 
             //stacks = i_stacks;
@@ -36,7 +38,7 @@ public class Hexagon {
 
             //float stackAngle, sliceAngle;
 
-            FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
+           // FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
             circleVertexBuffer.put(0.0f);
             circleVertexBuffer.put(0.0f);
             circleVertexBuffer.put(0.0f);
@@ -59,7 +61,7 @@ public class Hexagon {
      //   Gdx.gl11.glShadeModel(GL11.GL_SMOOTH);
      //   Gdx.gl11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
         Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, circleVertexBuffer);
-        Gdx.gl11.glNormalPointer(GL11.GL_FLOAT, 0, circleVertexBuffer);
+        //Gdx.gl11.glNormalPointer(GL11.GL_FLOAT, 0, circleVertexBuffer);
 
      //   Gdx.gl11.glEnable(GL11.GL_ALPHA_TEST);
      //   Gdx.gl11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
@@ -79,8 +81,9 @@ public class Hexagon {
     //        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, i, (slices+1)*2);
   //      }
         Gdx.gl11.glPushMatrix();
-        Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, circleVertexBuffer );
-        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, 24);
+        //Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, circleVertexBuffer );
+        Gdx.gl11.glNormal3f(0.0f, 0.0f, 1.0f);
+        Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, 8);
         Gdx.gl11.glPopMatrix();
 
       //  Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);

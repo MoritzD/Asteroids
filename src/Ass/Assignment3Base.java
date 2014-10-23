@@ -12,7 +12,7 @@ public class Assignment3Base implements ApplicationListener
     Camera camTopDown;
     Camera camThirdPerson;
     Hexagon hex;
-
+    Box bo;
 
     @Override
     public void create() {
@@ -40,6 +40,10 @@ public class Assignment3Base implements ApplicationListener
         camTopDown.perspective(40.0f, 1.777778f, 5.0f, 20.0f);
 
         hex = new Hexagon();
+
+        bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
+
+
 
 
 
@@ -119,11 +123,13 @@ public class Assignment3Base implements ApplicationListener
         float[] lightPosition = {5.0f, 10.0f, 15.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
 
+        bo.draw();
+
+        Gdx.gl11.glPushMatrix();
         float[] materialDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
-        Gdx.gl11.glPushMatrix();
        // Gdx.gl11.glTranslatef(1.0f, 1.0f, 1.0f);
-        Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
+        //Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
         hex.draw();
         Gdx.gl11.glPopMatrix();
     }
