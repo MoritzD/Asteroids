@@ -63,6 +63,19 @@ public class Hexagon {
             texCoordBuffer = BufferUtils.newFloatBuffer(vertexCount * 2);
             texCoordBuffer.put(texArray);
             texCoordBuffer.rewind();
+
+
+
+            FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(102);
+            circleVertexBuffer.put(0.0f);
+            circleVertexBuffer.put(0.0f);
+            for (double i=((2*Math.PI))/50;i<(2*Math.PI);i+=((2*Math.PI))/50){
+                circleVertexBuffer.put((float) Math.sin(i));
+                circleVertexBuffer.put((float) Math.cos(i));
+            }
+            circleVertexBuffer.put((float) Math.sin(((2*Math.PI))/50));
+            circleVertexBuffer.put((float) Math.cos(((2*Math.PI))/50));
+            circleVertexBuffer.rewind();
         }
 
 
