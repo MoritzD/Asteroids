@@ -17,6 +17,7 @@ public class Assignment3Base implements ApplicationListener
     Sphere planetEarth;
     Dodecahedron dodo;
     Box bo;
+    private float rotationAngle;
 
     @Override
     public void create() {
@@ -48,11 +49,10 @@ public class Assignment3Base implements ApplicationListener
         hex3 = new Hexagon();
         dodo = new Dodecahedron();
         planetEarth = new Sphere(12, 24);
-        planetEarth.setTexture("Textures/earth_texture1024x512.png");
+        planetEarth.setTexture("textures/earth_texture1024x512.png");
         planetEarth.setPosition(0,0,-30);
         planetEarth.scale(10,10,10);
 
-        dodo = new Dodecahedron();
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
 
@@ -79,6 +79,7 @@ public class Assignment3Base implements ApplicationListener
     private void update()
     {
         float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
+        rotationAngle += 90.0f * deltaTime;
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
@@ -147,8 +148,10 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glPopMatrix();
 
         Gdx.gl11.glPushMatrix();
+        planetEarth.setRotationAngle(rotationAngle);
         planetEarth.draw();
         Gdx.gl11.glPopMatrix();
+        Gdx.gl11.glScalef(0.5f,0.5f,0.5f);
         dodo.draw();
 
 

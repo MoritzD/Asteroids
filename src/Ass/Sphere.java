@@ -24,6 +24,12 @@ public class Sphere {
         private Point3D position = new Point3D(0,0,0);
         private Point3D scale = new Point3D(0,0,0);
 
+    public void setRotationAngle(float rotationAngle) {
+        this.rotationAngle = rotationAngle;
+    }
+
+    private float rotationAngle;
+
         public Sphere(int i_stacks, int i_slices)
         {
             if(!vertexExists) {
@@ -103,6 +109,7 @@ public class Sphere {
             tex.bind();
             Gdx.gl11.glTranslatef(position.x, position.y,  position.z);
             Gdx.gl11.glScalef(scale.x,scale.y,scale.z);
+            Gdx.gl11.glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
             for(int i = 0; i < vertexCount; i += (slices+1)*2)
             {
                 Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, i, (slices+1)*2);
