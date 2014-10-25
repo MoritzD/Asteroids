@@ -14,6 +14,7 @@ public class Assignment3Base implements ApplicationListener
     Hexagon hex;
     Hexagon hex2;
     Hexagon hex3;
+    Pentagon pen;
     Sphere planetEarth;
     Dodecahedron dodo;
     Box bo;
@@ -24,7 +25,7 @@ public class Assignment3Base implements ApplicationListener
         // TODO Auto-generated method stub
         Gdx.gl11.glEnable(GL11.GL_LIGHTING);
         Gdx.gl11.glEnable(GL11.GL_LIGHT0);
-        //Gdx.gl11.glEnable(GL11.GL_LIGHT1);
+        Gdx.gl11.glEnable(GL11.GL_LIGHT1);
         Gdx.gl11.glEnable(GL11.GL_DEPTH_TEST);
 
         Gdx.gl11.glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
@@ -47,9 +48,10 @@ public class Assignment3Base implements ApplicationListener
         hex = new Hexagon();
         hex2 = new Hexagon();
         hex3 = new Hexagon();
+        pen = new Pentagon();
         dodo = new Dodecahedron();
         planetEarth = new Sphere(12, 24);
-        planetEarth.setTexture("textures/earth_texture1024x512.png");
+        planetEarth.setTexture("Textures/earth_texture1024x512.png");
         planetEarth.setPosition(0,0,-30);
         planetEarth.scale(10,10,10);
 
@@ -137,6 +139,12 @@ public class Assignment3Base implements ApplicationListener
         float[] lightPosition = {5.0f, 10.0f, 15.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
 
+        float[] lightDiffuse1 = {0.5f, 1.0f, 0.5f, 1.0f};
+        Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1, 0);
+
+        float[] lightPosition1 = {-5.0f, 10.0f, -13.0f, 0.0f};
+        Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0);
+
         //bo.draw();
 
         Gdx.gl11.glPushMatrix();
@@ -151,7 +159,9 @@ public class Assignment3Base implements ApplicationListener
         planetEarth.setRotationAngle(rotationAngle);
         planetEarth.draw();
         Gdx.gl11.glPopMatrix();
-        Gdx.gl11.glScalef(0.5f,0.5f,0.5f);
+
+        //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
+       // pen.draw();
         dodo.draw();
 
 

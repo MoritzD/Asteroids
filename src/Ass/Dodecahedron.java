@@ -1,6 +1,9 @@
 package Ass;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 /**
  * Created by moe on 23.10.14.
@@ -8,8 +11,40 @@ import com.badlogic.gdx.Gdx;
 public class Dodecahedron {
 
     Pentagon pen;
+    FloatBuffer texCoordBuffer0,texCoordBuffer1;
+
     public Dodecahedron(){
+
+        texCoordBuffer0 = BufferUtils.newFloatBuffer(14);
+        texCoordBuffer0.put(new float[]{0.5f, 0.5f,          //midel    0
+                                        1.0f, 0.39f,        //1
+                                        0.81f, 1.0f,        //2
+                                        0.19f, 1.0f,        //3
+                                        0.0f, 0.39f,        //4
+                                        0.5f, 0.0f,         //5
+                                        1.0f, 0.39f});      //6
+        texCoordBuffer0.rewind();
+
+
+
+        System.out.println(texCoordBuffer0.get(2));
         pen = new Pentagon();
+        pen.texCoordBuffer = texCoordBuffer0;
+        pen.scaleTexture(0.5f);
+        System.out.println(texCoordBuffer0.get(2));
+        //pen.schiftTexture(0.5f,0.0f);
+        //pen.tex = new Texture(Gdx.files.internal("Textures/derpasteroidsquadrat.png"));
+
+
+        texCoordBuffer1 = BufferUtils.newFloatBuffer(14);
+        texCoordBuffer1.put(new float[]{0.5f, 0.5f,          //midel
+                                        1.0f, 0.39f,
+                                        texCoordBuffer0.get(11), texCoordBuffer0.get(12),
+                                        texCoordBuffer0.get(9), texCoordBuffer0.get(10),
+                                        0.0f, 0.39f,
+                                        0.5f, 0.0f,
+                                        1.0f, 0.39f});
+        texCoordBuffer1.rewind();
     }
 
 
@@ -20,6 +55,7 @@ public class Dodecahedron {
         pen.draw();
 
         Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
+
 
         for(int angle = 0; angle < 360 ; angle +=72) {
             Gdx.gl11.glPushMatrix();

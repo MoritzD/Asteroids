@@ -2,6 +2,7 @@ package Ass;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL11;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -13,13 +14,13 @@ public class Hexagon {
 
     private static FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(24);
     boolean vertexExists = false;
-
+    public Texture tex;
         public Hexagon()
         {
             if(!vertexExists) {
 
 
-                //tex = new Texture(Gdx.files.internal("assets/textures/star01.bmp"));
+                //tex = new Texture(Gdx.files.internal("assets/Textures/star01.bmp"));
 
                 //stacks = i_stacks;
                 //slices = i_slices;
@@ -69,7 +70,7 @@ public class Hexagon {
 //        Gdx.gl11.glEnable(GL11.GL_TEXTURE_2D);
   //      Gdx.gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
-        //Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
+        //Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer0);
         //tex.bind();
 
         //for(int i = 0; i < vertexCount; i += (slices+1)*2)
