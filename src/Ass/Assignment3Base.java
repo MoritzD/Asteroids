@@ -36,7 +36,7 @@ public class Assignment3Base implements ApplicationListener
 
 
         camFirstPerson = new Camera();
-        camFirstPerson.lookAt(new Point3D(0.0f, 0.0f, 1.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 2.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 40.0f);
 
         camThirdPerson = new Camera();
@@ -136,13 +136,13 @@ public class Assignment3Base implements ApplicationListener
         float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse, 0);
 
-        float[] lightPosition = {5.0f, 10.0f, 15.0f, 1.0f};
+        float[] lightPosition = {0.0f, 0.0f, 15.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
 
-        float[] lightDiffuse1 = {0.5f, 1.0f, 0.5f, 1.0f};
+        float[] lightDiffuse1 = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1, 0);
 
-        float[] lightPosition1 = {-5.0f, 10.0f, -13.0f, 0.0f};
+        float[] lightPosition1 = {-5.0f, -10.0f, -13.0f, 0.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0);
 
         //bo.draw();
