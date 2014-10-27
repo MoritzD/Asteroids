@@ -15,7 +15,7 @@ public class Dodecahedron {
     FloatBuffer[] texCoordBuffer = new FloatBuffer[6];
     FloatBuffer[] texCoordBufferUp = new FloatBuffer[6]; // Uper half of dodecahedron
     float rotationangel1 = -(float) Math.toRadians(72/2);
-    float Scalefaktor = 0.25f;
+    float Scalefaktor = 0.25f;              //0.25
 
     public Dodecahedron(){
 
@@ -33,7 +33,7 @@ public class Dodecahedron {
 
         System.out.println(texCoordBuffer[0].get(2));
         pen = new Pentagon();
-       // pen.tex = new Texture(Gdx.files.internal("Textures/derpasteroidsquadrat.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
+        pen.tex = new Texture(Gdx.files.internal("Textures/LavaAstero2.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
         pen.texCoordBuffer = texCoordBuffer[0];
         pen.scaleTexture(Scalefaktor);
         System.out.println(texCoordBuffer[0].get(2));
