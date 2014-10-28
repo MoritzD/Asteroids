@@ -12,42 +12,54 @@ import java.nio.FloatBuffer;
 public class Dodecahedron {
 
     Pentagon pen;
-    FloatBuffer[] texCoordBuffer = new FloatBuffer[6];
-    FloatBuffer[] texCoordBufferUp = new FloatBuffer[6]; // Uper half of dodecahedron
+    static boolean floatBuffersExist = false;
+    static FloatBuffer[] texCoordBuffer = new FloatBuffer[6];
+    static FloatBuffer[] texCoordBufferUp = new FloatBuffer[6]; // Uper half of dodecahedron
     float rotationangel1 = -(float) Math.toRadians(72/2);
     float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
+    protected Point3D pos;
+
+    public Dodecahedron(Point3D possition){
+        setUpDodoIfNeeded();
+        pos = possition;
+    }
 
     public Dodecahedron(){
+        setUpDodoIfNeeded();
+        pos = new Point3D(0.0f,0.0f,0.0f);
+    }
 
-        texCoordBuffer[0] = BufferUtils.newFloatBuffer(14);
-        texCoordBuffer[0].put(new float[]{0.5f, 0.5f,          //midel    0
-                                        1.0f, 0.39f,        //1
-                                        0.81f, 1.0f,        //2
-                                        0.19f, 1.0f,        //3
-                                        0.0f, 0.39f,        //4
-                                        0.5f, 0.0f,         //5
-                                        1.0f, 0.39f});      //6
-        texCoordBuffer[0].rewind();
+    private void setUpDodoIfNeeded(){
+        if(!floatBuffersExist) {
 
-
-
-        System.out.println(texCoordBuffer[0].get(2));
-        pen = new Pentagon();
-                    //pen.tex = new Texture(Gdx.files.internal("Textures/LavaAstero2.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
-        pen.texCoordBuffer = texCoordBuffer[0];
-        pen.scaleTexture(Scalefaktor);
-        System.out.println(texCoordBuffer[0].get(2));
-        //pen.schiftTexture(0.5f,0.0f);
-        //pen.tex = new Texture(Gdx.files.internal("Textures/derpasteroidsquadrat.png"));
+            texCoordBuffer[0] = BufferUtils.newFloatBuffer(14);
+            texCoordBuffer[0].put(new float[]{0.5f, 0.5f,          //midel    0
+                    1.0f, 0.39f,        //1
+                    0.81f, 1.0f,        //2
+                    0.19f, 1.0f,        //3
+                    0.0f, 0.39f,        //4
+                    0.5f, 0.0f,         //5
+                    1.0f, 0.39f});      //6
+            texCoordBuffer[0].rewind();
 
 
-        float BLx = 0, BLy = 0; // =  texCoordBuffer[0].get(8), BLy = texCoordBuffer[0].get(9);
-        float BRx = 0, BRy = 0; // = texCoordBuffer[0].get(10), BRy = texCoordBuffer[0].get(11);
-        float ONEx = 0, ONEy = 0;
+            System.out.println(texCoordBuffer[0].get(2));
+            pen = new Pentagon();
+            //pen.tex = new Texture(Gdx.files.internal("Textures/LavaAstero2.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
+            pen.texCoordBuffer = texCoordBuffer[0];
+            pen.scaleTexture(Scalefaktor);
+            System.out.println(texCoordBuffer[0].get(2));
+            //pen.schiftTexture(0.5f,0.0f);
+            //pen.tex = new Texture(Gdx.files.internal("Textures/derpasteroidsquadrat.png"));
 
-        //float BRx = 0f, BRy = 0.39f;
-        //float BLx = 0.5f, BLy = 0.0f;
+
+            float BLx = 0, BLy = 0; // =  texCoordBuffer[0].get(8), BLy = texCoordBuffer[0].get(9);
+            float BRx = 0, BRy = 0; // = texCoordBuffer[0].get(10), BRy = texCoordBuffer[0].get(11);
+            float ONEx = 0, ONEy = 0;
+
+            //float BRx = 0f, BRy = 0.39f;
+            //float BLx = 0.5f, BLy = 0.0f;
 /*
         texCoordBuffer[1] = BufferUtils.newFloatBuffer(14);
         texCoordBuffer[1].put(getTextureCoords(BLx,BLy,BRx,BRy));
@@ -71,85 +83,96 @@ public class Dodecahedron {
         texCoordBuffer[3].put(getTextureCoords(BLx,BLy,BRx,BRy));
         texCoordBuffer[3].rewind();
       */
-        for( int e = 1; e<6;e++){
+            for (int e = 1; e < 6; e++) {
 
-            switch (e){
-                case 1:
-                    BLx =  texCoordBuffer[0].get(8); BLy = texCoordBuffer[0].get(9);
-                    BRx = texCoordBuffer[0].get(10); BRy = texCoordBuffer[0].get(11);
-                    ONEx = -100; ONEy = -100;
-                    break;
-                case 2:
-                    BLx =  texCoordBuffer[0].get(6); BLy = texCoordBuffer[0].get(7);
-                    BRx = texCoordBuffer[0].get(8); BRy = texCoordBuffer[0].get(9);
-                    break;
-                case 3:
-                    BLx =  texCoordBuffer[0].get(4); BLy = texCoordBuffer[0].get(5);
-                    BRx = texCoordBuffer[0].get(6); BRy = texCoordBuffer[0].get(7);
-                    break;
-                case 4:
-                    BLx =  texCoordBuffer[0].get(2); BLy = texCoordBuffer[0].get(3);
-                    BRx = texCoordBuffer[0].get(4); BRy = texCoordBuffer[0].get(5);
-                    break;
-                case 5:
-                    BLx =  texCoordBuffer[0].get(10); BLy = texCoordBuffer[0].get(11);
-                    BRx = texCoordBuffer[0].get(2); BRy = texCoordBuffer[0].get(3);
-                    break;
-            }
-            if( e != 1) {
-                ONEx = texCoordBuffer[e-1].get(8);
-                ONEy = texCoordBuffer[e-1].get(9);
-            }
-            texCoordBuffer[e] = BufferUtils.newFloatBuffer(14);
-            texCoordBuffer[e].put(getTextureCoords(BLx, BLy, BRx, BRy, ONEx, ONEy));
-            texCoordBuffer[e].rewind();
+                switch (e) {
+                    case 1:
+                        BLx = texCoordBuffer[0].get(8);
+                        BLy = texCoordBuffer[0].get(9);
+                        BRx = texCoordBuffer[0].get(10);
+                        BRy = texCoordBuffer[0].get(11);
+                        ONEx = -100;
+                        ONEy = -100;
+                        break;
+                    case 2:
+                        BLx = texCoordBuffer[0].get(6);
+                        BLy = texCoordBuffer[0].get(7);
+                        BRx = texCoordBuffer[0].get(8);
+                        BRy = texCoordBuffer[0].get(9);
+                        break;
+                    case 3:
+                        BLx = texCoordBuffer[0].get(4);
+                        BLy = texCoordBuffer[0].get(5);
+                        BRx = texCoordBuffer[0].get(6);
+                        BRy = texCoordBuffer[0].get(7);
+                        break;
+                    case 4:
+                        BLx = texCoordBuffer[0].get(2);
+                        BLy = texCoordBuffer[0].get(3);
+                        BRx = texCoordBuffer[0].get(4);
+                        BRy = texCoordBuffer[0].get(5);
+                        break;
+                    case 5:
+                        BLx = texCoordBuffer[0].get(10);
+                        BLy = texCoordBuffer[0].get(11);
+                        BRx = texCoordBuffer[0].get(2);
+                        BRy = texCoordBuffer[0].get(3);
+                        break;
+                }
+                if (e != 1) {
+                    ONEx = texCoordBuffer[e - 1].get(8);
+                    ONEy = texCoordBuffer[e - 1].get(9);
+                }
+                texCoordBuffer[e] = BufferUtils.newFloatBuffer(14);
+                texCoordBuffer[e].put(getTextureCoords(BLx, BLy, BRx, BRy, ONEx, ONEy));
+                texCoordBuffer[e].rewind();
 
-            rotationangel1 -= (float)Math.toRadians(72);
-        }
-        rotationangel1 = -(float) Math.toRadians(180+36);
-        int Left = 2, Right = 3;
-        for(int t = 1; t<6; t++){
-            texCoordBufferUp[t] = BufferUtils.newFloatBuffer(14);
-            texCoordBufferUp[t].put(new float[]{
+                rotationangel1 -= (float) Math.toRadians(72);
+            }
+            rotationangel1 = -(float) Math.toRadians(180 + 36);
+            int Left = 2, Right = 3;
+            for (int t = 1; t < 6; t++) {
+                texCoordBufferUp[t] = BufferUtils.newFloatBuffer(14);
+                texCoordBufferUp[t].put(new float[]{
+                        0.5f, 0.22f * Scalefaktor,          //midel    0
+                        texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),        //1
+                        (texCoordBuffer[Right].get(4) + texCoordBuffer[Right].get(6)) / 2, (texCoordBuffer[Right].get(5) + texCoordBuffer[Right].get(7)) / 2,         //2
+                        (texCoordBuffer[Left].get(4) + texCoordBuffer[Left].get(6)) / 2, (texCoordBuffer[Left].get(5) + texCoordBuffer[Left].get(7)) / 2,        //3     mitte grundlienie 2er
+                        texCoordBuffer[Left].get(10), texCoordBuffer[Left].get(11),        //4
+                        texCoordBuffer[Right].get(2), texCoordBuffer[Right].get(3),         //5
+                        texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),
+                });      //6
+
+
+                texCoordBufferUp[t].put(0, getMiddlePoint(t, true)[0]);
+                texCoordBufferUp[t].put(1, getMiddlePoint(t, true)[1]);
+                texCoordBufferUp[t].rewind();
+
+                Left--;
+                Right--;
+                if (Left == 0) Left = 5;
+                if (Right == 0) Right = 5;
+
+                rotationangel1 -= (float) Math.toRadians(72);
+
+            }
+            rotationangel1 = (float) Math.toRadians(180);
+
+            texCoordBufferUp[0] = BufferUtils.newFloatBuffer(14);
+            texCoordBufferUp[0].put(new float[]{
                     0.5f, 0.22f * Scalefaktor,          //midel    0
-                    texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),        //1
-                    (texCoordBuffer[Right].get(4) + texCoordBuffer[Right].get(6)) / 2, (texCoordBuffer[Right].get(5) + texCoordBuffer[Right].get(7)) / 2,         //2
-                    (texCoordBuffer[Left].get(4) + texCoordBuffer[Left].get(6)) / 2, (texCoordBuffer[Left].get(5) + texCoordBuffer[Left].get(7)) / 2,        //3     mitte grundlienie 2er
-                    texCoordBuffer[Left].get(10), texCoordBuffer[Left].get(11),        //4
-                    texCoordBuffer[Right].get(2), texCoordBuffer[Right].get(3),         //5
-                    texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),
+                    texCoordBufferUp[4].get(6), texCoordBufferUp[4].get(7),        //1   Check
+                    texCoordBufferUp[3].get(6), texCoordBufferUp[3].get(7),        //2   Check
+                    texCoordBufferUp[3].get(4), texCoordBufferUp[3].get(5),       //3    Check
+                    texCoordBufferUp[1].get(6), texCoordBufferUp[1].get(7),        //4   Check
+                    texCoordBufferUp[1].get(4), texCoordBufferUp[1].get(5),         //5  check
+                    texCoordBufferUp[4].get(6), texCoordBufferUp[4].get(7),          // Check
             });      //6
 
 
-            texCoordBufferUp[t].put(0, getMiddlePoint(t, true)[0]);
-            texCoordBufferUp[t].put(1, getMiddlePoint(t, true)[1]);
-            texCoordBufferUp[t].rewind();
-
-            Left--;
-            Right--;
-            if(Left == 0) Left = 5;
-            if(Right == 0) Right = 5;
-
-            rotationangel1 -= (float) Math.toRadians(72);
-
-        }
-        rotationangel1 = (float) Math.toRadians(180);
-
-        texCoordBufferUp[0] = BufferUtils.newFloatBuffer(14);
-        texCoordBufferUp[0].put(new float[]{
-                0.5f, 0.22f * Scalefaktor,          //midel    0
-                texCoordBufferUp[4].get(6), texCoordBufferUp[4].get(7),        //1   Check
-                texCoordBufferUp[3].get(6), texCoordBufferUp[3].get(7),        //2   Check
-                texCoordBufferUp[3].get(4), texCoordBufferUp[3].get(5),       //3    Check
-                texCoordBufferUp[1].get(6), texCoordBufferUp[1].get(7),        //4   Check
-                texCoordBufferUp[1].get(4), texCoordBufferUp[1].get(5),         //5  check
-                texCoordBufferUp[4].get(6), texCoordBufferUp[4].get(7),          // Check
-        });      //6
-
-
-        texCoordBufferUp[0].rewind();
-        texCoordBufferUp[0].put(0, getMiddlePoint(0, true)[0]);
-        texCoordBufferUp[0].put(1, getMiddlePoint(0, true)[1]);
+            texCoordBufferUp[0].rewind();
+            texCoordBufferUp[0].put(0, getMiddlePoint(0, true)[0]);
+            texCoordBufferUp[0].put(1, getMiddlePoint(0, true)[1]);
         /*
         texCoordBufferUp[2] = BufferUtils.newFloatBuffer(14);
         texCoordBufferUp[2].put(new float[]{
@@ -207,6 +230,7 @@ public class Dodecahedron {
         System.out.println(texCoordBufferUp[1].get(2)+" ; "+texCoordBufferUp[1].get(3));
         System.out.println(texCoordBufferUp[1].get(4)+" ; "+texCoordBufferUp[1].get(5));
 */
+        }
 
 
     }
