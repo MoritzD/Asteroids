@@ -18,14 +18,14 @@ public class Dodecahedron {
     float rotationangel1 = -(float) Math.toRadians(72/2);
     Vector3D direction;
     Random rand = new Random();
-    float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
+    float deltaTime ;
     float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
     protected Point3D pos;
 
-    public Dodecahedron(Point3D possition){
+    public Dodecahedron(Point3D position){
         setUpDodoIfNeeded();
-        pos = possition;
+        pos = position;
     }
 
     public Dodecahedron(){
@@ -292,7 +292,8 @@ public class Dodecahedron {
 
 
     public void draw(){
-        System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+        deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
+       // System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
         if(direction == null){
 
             Gdx.gl11.glTranslatef(0,0,0);
@@ -509,7 +510,7 @@ public class Dodecahedron {
              ;
             else{
 
-                System.out.println("Never get here");
+              //  System.out.println("Never get here"+deltaTime);
                 direction.x +=5*deltaTime;
 
             }
@@ -518,7 +519,7 @@ public class Dodecahedron {
                 ;
             else{
 
-                System.out.println("Never get here");
+              //  System.out.println("Never get here"+deltaTime);
                 direction.y +=5*deltaTime;
             }
 
@@ -526,7 +527,7 @@ public class Dodecahedron {
                 ;
             else {
 
-                System.out.println("Never get here");
+              //  System.out.println("Never get here"+deltaTime);
                 direction.z += 5 * deltaTime;
             }
         }

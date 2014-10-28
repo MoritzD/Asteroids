@@ -86,6 +86,8 @@ public class Assignment3Base implements ApplicationListener
         float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
         rotationAngle += 90.0f * deltaTime;
 
+        dodo.movement();
+
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
             camFirstPerson.pitch(-90.0f * deltaTime);
@@ -190,7 +192,6 @@ public class Assignment3Base implements ApplicationListener
         //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
        // pen.draw();
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
-        dodo.movement();
         dodo.draw();
 
 
