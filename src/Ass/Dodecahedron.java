@@ -1,10 +1,10 @@
 package Ass;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.BufferUtils;
 
 import java.nio.FloatBuffer;
+import java.util.Random;
 
 /**
  * Created by moe on 23.10.14.
@@ -16,6 +16,9 @@ public class Dodecahedron {
     static FloatBuffer[] texCoordBuffer = new FloatBuffer[6];
     static FloatBuffer[] texCoordBufferUp = new FloatBuffer[6]; // Uper half of dodecahedron
     float rotationangel1 = -(float) Math.toRadians(72/2);
+    Vector3D direction;
+    Random rand = new Random();
+    float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
     float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
     protected Point3D pos;
@@ -143,6 +146,23 @@ public class Dodecahedron {
                         texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),
                 });      //6
 
+            rotationangel1 -= (float)Math.toRadians(72);
+        }
+
+        rotationangel1 = -(float) Math.toRadians(180+36);
+         Left = 2;
+         Right = 3;
+        for(int t = 1; t<6; t++){
+            texCoordBufferUp[t] = BufferUtils.newFloatBuffer(14);
+            texCoordBufferUp[t].put(new float[]{
+                    0.5f, 0.22f * Scalefaktor,          //midel    0
+                    texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),        //1
+                    (texCoordBuffer[Right].get(4) + texCoordBuffer[Right].get(6)) / 2, (texCoordBuffer[Right].get(5) + texCoordBuffer[Right].get(7)) / 2,         //2
+                    (texCoordBuffer[Left].get(4) + texCoordBuffer[Left].get(6)) / 2, (texCoordBuffer[Left].get(5) + texCoordBuffer[Left].get(7)) / 2,        //3     mitte grundlienie 2er
+                    texCoordBuffer[Left].get(10), texCoordBuffer[Left].get(11),        //4
+                    texCoordBuffer[Right].get(2), texCoordBuffer[Right].get(3),         //5
+                    texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),
+            });      //6
 
                 texCoordBufferUp[t].put(0, getMiddlePoint(t, true)[0]);
                 texCoordBufferUp[t].put(1, getMiddlePoint(t, true)[1]);
@@ -272,6 +292,15 @@ public class Dodecahedron {
 
 
     public void draw(){
+        System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+        if(direction == null){
+
+            Gdx.gl11.glTranslatef(0,0,0);
+        }
+        else{
+
+            Gdx.gl11.glTranslatef(direction.x,direction.y,direction.z);
+        }
         Gdx.gl11.glPushMatrix();
         pen.texCoordBuffer = texCoordBuffer[0];
 
@@ -449,4 +478,72 @@ public class Dodecahedron {
                 ONEx, ONEy,  // 6
         };
     }*/
+    // changes the direction vector so that the asteroid moves in a random direction
+    public void movement(){
+
+
+        if(direction == null){
+            int temp1,temp2,temp3;
+            temp1 = rand.nextInt(3);
+            if(temp1==2)
+                temp1 = -1;
+            temp2 = rand.nextInt(3);
+            if(temp2 == 2)
+                temp2 = -1;
+            temp3 = rand.nextInt(3);
+            if(temp3 ==2)
+                temp3 =-1;
+            if(temp1==0&& temp2==0&&temp3==0) {
+                temp1 = rand.nextInt(2);
+                temp2 = rand.nextInt(2);
+                temp3 = rand.nextInt(2);
+            }
+
+            else {
+                direction = new Vector3D(temp1, temp2, temp3);
+                System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+            }
+        }
+        else{
+            if(direction.x == 0.0f)
+             ;
+            else{
+
+                System.out.println("Never get here");
+                direction.x +=5*deltaTime;
+
+            }
+
+            if(direction.y == 0.0f)
+                ;
+            else{
+
+                System.out.println("Never get here");
+                direction.y +=5*deltaTime;
+            }
+
+            if(direction.z==0.0f)
+                ;
+            else {
+
+                System.out.println("Never get here");
+                direction.z += 5 * deltaTime;
+            }
+        }
+
+    }
+
+    public void collision(){
+
+        if("Collision"=="2"){
+
+            //ToDo diffrent cases
+
+        }
+
+
+
+
+
+    }
 }

@@ -67,7 +67,7 @@ public class Pentagon {
                 vertexExists = true;
             }
 
-            tex = new Texture(Gdx.files.internal("Textures/pentagon4.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
+            tex = new Texture(Gdx.files.internal("Textures/derpasteroidsquadrat.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
         }
 
     public void scaleTexture(float scale){
