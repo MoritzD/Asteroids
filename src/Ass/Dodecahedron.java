@@ -16,6 +16,7 @@ public class Dodecahedron {
     FloatBuffer[] texCoordBufferUp = new FloatBuffer[6]; // Uper half of dodecahedron
     float rotationangel1 = -(float) Math.toRadians(72/2);
     float Scalefaktor = 0.25f;              //0.25
+    protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
 
     public Dodecahedron(){
 
@@ -33,7 +34,7 @@ public class Dodecahedron {
 
         System.out.println(texCoordBuffer[0].get(2));
         pen = new Pentagon();
-        pen.tex = new Texture(Gdx.files.internal("Textures/LavaAstero2.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
+                    //pen.tex = new Texture(Gdx.files.internal("Textures/LavaAstero2.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
         pen.texCoordBuffer = texCoordBuffer[0];
         pen.scaleTexture(Scalefaktor);
         System.out.println(texCoordBuffer[0].get(2));
@@ -105,11 +106,12 @@ public class Dodecahedron {
 
             rotationangel1 -= (float)Math.toRadians(72);
         }
+        rotationangel1 = -(float) Math.toRadians(180+36);
         int Left = 2, Right = 3;
         for(int t = 1; t<6; t++){
             texCoordBufferUp[t] = BufferUtils.newFloatBuffer(14);
             texCoordBufferUp[t].put(new float[]{
-                    0.5f, 0.5f,          //midel    0
+                    0.5f, 0.22f * Scalefaktor,          //midel    0
                     texCoordBuffer[Right].get(10), texCoordBuffer[Right].get(11),        //1
                     (texCoordBuffer[Right].get(4) + texCoordBuffer[Right].get(6)) / 2, (texCoordBuffer[Right].get(5) + texCoordBuffer[Right].get(7)) / 2,         //2
                     (texCoordBuffer[Left].get(4) + texCoordBuffer[Left].get(6)) / 2, (texCoordBuffer[Left].get(5) + texCoordBuffer[Left].get(7)) / 2,        //3     mitte grundlienie 2er
@@ -128,10 +130,14 @@ public class Dodecahedron {
             if(Left == 0) Left = 5;
             if(Right == 0) Right = 5;
 
+            rotationangel1 -= (float) Math.toRadians(72);
+
         }
+        rotationangel1 = (float) Math.toRadians(180);
+
         texCoordBufferUp[0] = BufferUtils.newFloatBuffer(14);
         texCoordBufferUp[0].put(new float[]{
-                0.5f, 0.5f,          //midel    0
+                0.5f, 0.22f * Scalefaktor,          //midel    0
                 texCoordBufferUp[4].get(6), texCoordBufferUp[4].get(7),        //1   Check
                 texCoordBufferUp[3].get(6), texCoordBufferUp[3].get(7),        //2   Check
                 texCoordBufferUp[3].get(4), texCoordBufferUp[3].get(5),       //3    Check
@@ -141,9 +147,9 @@ public class Dodecahedron {
         });      //6
 
 
+        texCoordBufferUp[0].rewind();
         texCoordBufferUp[0].put(0, getMiddlePoint(0, true)[0]);
         texCoordBufferUp[0].put(1, getMiddlePoint(0, true)[1]);
-        texCoordBufferUp[0].rewind();
         /*
         texCoordBufferUp[2] = BufferUtils.newFloatBuffer(14);
         texCoordBufferUp[2].put(new float[]{
@@ -208,18 +214,33 @@ public class Dodecahedron {
     private float[] getMiddlePoint(int buff, boolean Up) {
         float sum[] = {0.0f,0.0f};
         if(Up){
-            for (int e= 0 ; e < 12; e += 2) {
+           /* for (int e= 2 ; e < 12; e += 2) {
                 sum[0] += texCoordBufferUp[buff].get(e);
             }
             for (int e= 1 ; e < 12; e += 2) {
                 sum[1] += texCoordBufferUp[buff].get(e);
             }
-            sum[0] = sum[0]/6;
+            sum[0] = sum[0]/5;
             sum[1] = sum[1]/6;
+           */ //return sum;
+       //     sum[0] = (texCoordBufferUp[buff].get(8) + texCoordBufferUp[buff].get(2))/2;
+       //     sum[1] = (texCoordBufferUp[buff].get(11) + texCoordBufferUp[buff].get(5))/2;
+            sum[0] = texCoordBufferUp[buff].get(6) + ((0.31f * Scalefaktor) * (float) Math.cos(rotationangel1) - (-0.30f * Scalefaktor) * (float) Math.sin(rotationangel1));  // 0 x
+            sum[1] = texCoordBufferUp[buff].get(7) + ((0.31f * Scalefaktor) * (float) Math.sin(rotationangel1) + (-0.30f * Scalefaktor) * (float) Math.cos(rotationangel1)); // 0 y
+
+
             return sum;
         }
         else{
-            throw new UnsupportedOperationException(" This option is yet not implementet; getMiddlePoint of the Lower half of the Dodekahedron");
+            for (int e= 0 ; e < 12; e += 2) {
+                sum[0] += texCoordBuffer[buff].get(e);
+            }
+            for (int e= 1 ; e < 12; e += 2) {
+                sum[1] += texCoordBuffer[buff].get(e);
+            }
+            sum[0] = sum[0]/6;
+            sum[1] = sum[1]/6;
+            return sum;
         }
 
 
@@ -231,7 +252,17 @@ public class Dodecahedron {
         pen.texCoordBuffer = texCoordBuffer[0];
 
         Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
+        Gdx.gl11.glTranslatef(0.0f, 0.0f, 2.62f/2);
+
+
+                Gdx.gl11.glTranslatef(0.0f,0.0f,-distanceFaktor/2);
+
+                Gdx.gl11.glPushMatrix();
+                Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
+                Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
         pen.draw();
+                Gdx.gl11.glPopMatrix();
 
         Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
 
@@ -252,6 +283,10 @@ public class Dodecahedron {
             Gdx.gl11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
 
             Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+                    Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
+                    Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                    Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
+
             pen.draw();
             Gdx.gl11.glPopMatrix();
             //first = false;
@@ -262,13 +297,20 @@ public class Dodecahedron {
 
 
         Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
-        Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.62f);
+        Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.62f/2);
+                Gdx.gl11.glTranslatef(0.0f,0.0f,distanceFaktor/2);
         Gdx.gl11.glRotatef(180, 1.0f, 0.0f, 0.0f);
 
         pen.texCoordBuffer = texCoordBufferUp[0];
         //pen.texCoordBuffer = texCoordBuffer[0];
 
+                Gdx.gl11.glPushMatrix();
+                Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
+                Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
         pen.draw();
+                Gdx.gl11.glPopMatrix();
+
         i=1;
 
         Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
@@ -286,6 +328,9 @@ public class Dodecahedron {
             Gdx.gl11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
 
             Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f);
+                    Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
+                    Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                    Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
             pen.draw();
             Gdx.gl11.glPopMatrix();
         }

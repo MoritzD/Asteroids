@@ -18,6 +18,7 @@ public class Assignment3Base implements ApplicationListener
     Sphere planetEarth;
     Dodecahedron dodo;
     Box bo;
+    float acc = 0;
     private float rotationAngle;
 
     @Override
@@ -127,8 +128,26 @@ public class Assignment3Base implements ApplicationListener
         {
             camFirstPerson.slide(0.0f, -10.0f * deltaTime, 0.0f);
         }
+        if(Gdx.input.isKeyPressed(Input.Keys.Q))
+        {
+            dodo.explodefactor = 0;
+            dodo.explodeScaleFactor =  1;
+            acc = dodo.distanceFaktor = 0;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+            dodo.explodefactor += 5 * deltaTime;
+            //acc -= 20 * deltaTime;
+            if(0 < dodo.explodeScaleFactor ) {
+                dodo.explodeScaleFactor -= 2 * deltaTime;
+                // Discard object!
+            }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.X)) {
+            dodo.distanceFaktor = - Math.abs(2 * (float) Math.sin(acc));
+            acc += 2*deltaTime;
+        }
 
-    }
+        }
 
     private void display()
     {
