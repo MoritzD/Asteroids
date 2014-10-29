@@ -38,7 +38,7 @@ public class Assignment3Base implements ApplicationListener
 
 
         camFirstPerson = new Camera();
-        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 10.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 5.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 40.0f);
 
         camThirdPerson = new Camera();

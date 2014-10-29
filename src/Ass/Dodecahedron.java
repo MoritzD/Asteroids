@@ -22,8 +22,8 @@ public class Dodecahedron {
     float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
     protected Point3D center;
-    int speed =5;
-    float radius=6.0f;
+    int speed =2;
+    float radius=0.25f;
 
     public Dodecahedron(Point3D position){
         setUpDodoIfNeeded();
@@ -296,14 +296,10 @@ public class Dodecahedron {
     public void draw(){
         deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
        // System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
-        if(direction == null){
 
-            Gdx.gl11.glTranslatef(0,0,0);
-        }
-        else{
+            Gdx.gl11.glTranslatef(center.x,center.y,center.z);
 
-            Gdx.gl11.glTranslatef(direction.x,direction.y,direction.z);
-        }
+
         Gdx.gl11.glPushMatrix();
         pen.texCoordBuffer = texCoordBuffer[0];
 
@@ -519,9 +515,9 @@ public class Dodecahedron {
 
               //  System.out.println("Never get here"+deltaTime);
                 if(direction.x>0)
-                    direction.x +=speed*deltaTime;
+                   center.x +=speed*deltaTime;
                 else
-                    direction.x -=speed*deltaTime;
+                   center.x-=speed*deltaTime;
 
             }
 
@@ -531,9 +527,9 @@ public class Dodecahedron {
 
               //  System.out.println("Never get here"+deltaTime);
                 if(direction.y>0)
-                    direction.y +=speed*deltaTime;
+                    center.y +=speed*deltaTime;
                 else
-                    direction.y -=speed*deltaTime;
+                    center.y-=speed*deltaTime;
             }
 
             if(direction.z==0.0f)
@@ -542,9 +538,9 @@ public class Dodecahedron {
 
               //  System.out.println("Never get here"+deltaTime);
                 if(direction.z>0)
-                    direction.z +=speed*deltaTime;
+                    center.z +=speed*deltaTime;
                 else
-                    direction.z -=speed*deltaTime;
+                    center.z-=speed*deltaTime;
             }
         }
 
