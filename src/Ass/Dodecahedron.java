@@ -21,16 +21,18 @@ public class Dodecahedron {
     float deltaTime ;
     float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
-    protected Point3D pos;
+    protected Point3D center;
+    int speed =5;
+    float radius=6.0f;
 
     public Dodecahedron(Point3D position){
         setUpDodoIfNeeded();
-        pos = position;
+        center = position;
     }
 
     public Dodecahedron(){
         setUpDodoIfNeeded();
-        pos = new Point3D(0.0f,0.0f,0.0f);
+        center = new Point3D(0.0f,0.0f,0.0f);
     }
 
     private void setUpDodoIfNeeded(){
@@ -480,30 +482,35 @@ public class Dodecahedron {
         };
     }*/
     // changes the direction vector so that the asteroid moves in a random direction
-    public void movement(){
+    public void movement(int x, int y, int z){
 
 
         if(direction == null){
             int temp1,temp2,temp3;
-            temp1 = rand.nextInt(3);
-            if(temp1==2)
-                temp1 = -1;
-            temp2 = rand.nextInt(3);
-            if(temp2 == 2)
-                temp2 = -1;
-            temp3 = rand.nextInt(3);
-            if(temp3 ==2)
-                temp3 =-1;
-            if(temp1==0&& temp2==0&&temp3==0) {
-                temp1 = rand.nextInt(2);
-                temp2 = rand.nextInt(2);
-                temp3 = rand.nextInt(2);
-            }
+            // this is the code that usually generates random direction vectors but I want to test collision so
+            // I want to manually hardcode direction vectors
+//            temp1 = rand.nextInt(3);
+//            if(temp1==2)
+//                temp1 = -1;
+//            temp2 = rand.nextInt(3);
+//            if(temp2 == 2)
+//                temp2 = -1;
+//            temp3 = rand.nextInt(3);
+//            if(temp3 ==2)
+//                temp3 =-1;
+//            if(temp1==0&& temp2==0&&temp3==0) {
+//                temp1 = rand.nextInt(2);
+//                temp2 = rand.nextInt(2);
+//                temp3 = rand.nextInt(2);
+//            }
 
-            else {
+          //  else {
+            temp1 = x;
+            temp2 =y;
+            temp3 = z;
                 direction = new Vector3D(temp1, temp2, temp3);
                 System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
-            }
+           // }
         }
         else{
             if(direction.x == 0.0f)
@@ -511,7 +518,10 @@ public class Dodecahedron {
             else{
 
               //  System.out.println("Never get here"+deltaTime);
-                direction.x +=5*deltaTime;
+                if(direction.x>0)
+                    direction.x +=speed*deltaTime;
+                else
+                    direction.x -=speed*deltaTime;
 
             }
 
@@ -520,7 +530,10 @@ public class Dodecahedron {
             else{
 
               //  System.out.println("Never get here"+deltaTime);
-                direction.y +=5*deltaTime;
+                if(direction.y>0)
+                    direction.y +=speed*deltaTime;
+                else
+                    direction.y -=speed*deltaTime;
             }
 
             if(direction.z==0.0f)
@@ -528,17 +541,28 @@ public class Dodecahedron {
             else {
 
               //  System.out.println("Never get here"+deltaTime);
-                direction.z += 5 * deltaTime;
+                if(direction.z>0)
+                    direction.z +=speed*deltaTime;
+                else
+                    direction.z -=speed*deltaTime;
             }
         }
 
     }
 
-    public void collision(){
+    public void collision(Dodecahedron asteroid){
 
-        if("Collision"=="2"){
+        //ToDo diffrent cases (x2-x1)^2 + (y1-y2)^2 + (z1-z2)^2 <= (r1+r2)^2)
+        // If the distance between the center points is less then the radius of the asteroids summed
+        // then we have  a collision
+        // at the moment the problem is that the center doesn't move with the decahedron
 
-            //ToDo diffrent cases
+        if((this.center.x-asteroid.center.x)*(this.center.x-asteroid.center.x) +
+           (this.center.y-asteroid.center.x)*(this.center.y-asteroid.center.x) +
+           (this.center.z-asteroid.center.z)*(this.center.z-asteroid.center.z)
+                <=(this.radius+asteroid.radius)*(this.radius+asteroid.radius)){
+
+            System.out.println("Hit!! "+this.center.x+","+this.center.y);
 
         }
 

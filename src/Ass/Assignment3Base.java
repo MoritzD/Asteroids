@@ -16,7 +16,7 @@ public class Assignment3Base implements ApplicationListener
     Hexagon hex3;
     Pentagon pen;
     Sphere planetEarth;
-    Dodecahedron dodo;
+    Dodecahedron dodo, bobo;
     Box bo;
     float acc = 0;
     private float rotationAngle;
@@ -38,7 +38,7 @@ public class Assignment3Base implements ApplicationListener
 
 
         camFirstPerson = new Camera();
-        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 2.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 10.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 40.0f);
 
         camThirdPerson = new Camera();
@@ -54,13 +54,14 @@ public class Assignment3Base implements ApplicationListener
 
         planetEarth = new Sphere(12, 24);
         planetEarth.setTexture("Textures/earth_texture1024x512.png");
-        planetEarth.setPosition(0,0,-30);
+        planetEarth.setPosition(0, 0, -30);
         planetEarth.scale(10,10,10);
 
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
 
         dodo = new Dodecahedron();
+        bobo = new Dodecahedron();
 
 
 
@@ -85,8 +86,15 @@ public class Assignment3Base implements ApplicationListener
     {
         float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
         rotationAngle += 90.0f * deltaTime;
+        Gdx.gl11.glPushMatrix();
+        //dodo.movement(1,1,1);
+        Gdx.gl11.glPopMatrix();
 
-        dodo.movement();
+        Gdx.gl11.glPushMatrix();
+        bobo.movement(-1,-1,-1);
+        Gdx.gl11.glPopMatrix();
+
+        dodo.collision(bobo);
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
@@ -193,6 +201,7 @@ public class Assignment3Base implements ApplicationListener
        // pen.draw();
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
+        bobo.draw();
 
 
 
