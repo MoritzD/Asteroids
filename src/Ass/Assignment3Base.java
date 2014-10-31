@@ -69,11 +69,12 @@ public class Assignment3Base implements ApplicationListener
         bobo = new Dodecahedron();
         bobo.setCenter(5,5,5);
         dodo.setCenter(-5,-5,-5);
-        bobo.setDirection(-1, -1, -1);
-        dodo.setDirection(1,1,1);
+//        bobo.setDirection(-1, -1, -1);
+//        dodo.setDirection(1,1,1);
         dodo.pen.setTex("Textures/LavaAstero2.png");
-//        ObjLoader loader = new ObjLoader();
-//        model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
+        bobo.setDirection(0,0,-1);
+        dodo.setDirection(1,1,0);
+
 
 
 
@@ -100,8 +101,7 @@ public class Assignment3Base implements ApplicationListener
         rotationAngle += 90.0f * deltaTime;
         bobo.movement();
         dodo.movement();
-//        bobo.movement(0,0,-1);
-//        dodo.movement(1,1,0);
+
 
 
 
@@ -220,12 +220,6 @@ public class Assignment3Base implements ApplicationListener
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
-//        Gdx.gl11.glPushMatrix();
-//        Gdx.gl11.glPushMatrix();
-//        Gdx.gl11.glTranslatef(position.x, position.y, position.z);
-//        Gdx.gl11.glRotatef(180, 0, 1, 0);
-//        model.render();
-//        Gdx.gl11.glPopMatrix();
 
 
 
