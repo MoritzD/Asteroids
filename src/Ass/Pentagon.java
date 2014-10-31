@@ -16,7 +16,12 @@ public class Pentagon {
         protected static FloatBuffer circleVertexBuffer = BufferUtils.newFloatBuffer(21),texCoordBuffer;
 
         boolean vertexExists = false;
-        protected Texture tex;
+
+    public void setTex(String filename) {
+       tex = new Texture(Gdx.files.internal(filename));
+    }
+
+    protected Texture tex;
 
         public Pentagon()
         {

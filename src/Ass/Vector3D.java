@@ -60,4 +60,24 @@ public class Vector3D
     public Vector3D getNewInstance(){
         return new Vector3D(this.x,this.y,this.z);
     }
+    public  Vector3D addition(Vector3D v){
+       return new Vector3D( this.x+v.x,this.y+v.y,this.z+v.z);
+    }
+    public boolean isNullVector3D(){
+        if(this.x+this.y+this.z==0)
+           return true;
+        else
+           return false;
+    }
+    public void transfer(Vector3D v){
+        x = v.x;
+        y = v.y;
+        z = v.z;
+    }
+
+    public void inverse() {
+        x *=-1;
+        y *=-1;
+        z *=-1;
+    }
 }

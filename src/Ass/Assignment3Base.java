@@ -38,7 +38,7 @@ public class Assignment3Base implements ApplicationListener
 
 
         camFirstPerson = new Camera();
-        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 5.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+        camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 8.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 40.0f);
 
         camThirdPerson = new Camera();
@@ -62,7 +62,11 @@ public class Assignment3Base implements ApplicationListener
 
         dodo = new Dodecahedron();
         bobo = new Dodecahedron();
-
+        bobo.setCenter(5,5,5);
+        dodo.setCenter(-5,-5,-5);
+        bobo.setDirection(-1,-1,-1);
+        dodo.setDirection(1,1,1);
+        dodo.pen.setTex("Textures/LavaAstero2.png");
 
 
 
@@ -86,15 +90,21 @@ public class Assignment3Base implements ApplicationListener
     {
         float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
         rotationAngle += 90.0f * deltaTime;
-        Gdx.gl11.glPushMatrix();
-        //dodo.movement(1,1,1);
-        Gdx.gl11.glPopMatrix();
+        bobo.movement();
+        dodo.movement();
+//        bobo.movement(0,0,-1);
+//        dodo.movement(1,1,0);
 
-        Gdx.gl11.glPushMatrix();
-        bobo.movement(-1,-1,-1);
-        Gdx.gl11.glPopMatrix();
 
-        dodo.collision(bobo);
+
+
+
+
+       // dodo.collision(bobo);
+        // can't do this or it won't work
+       bobo.collision(dodo);
+
+
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
@@ -202,6 +212,8 @@ public class Assignment3Base implements ApplicationListener
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
+
+
 
 
 
