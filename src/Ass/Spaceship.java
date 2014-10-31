@@ -14,10 +14,11 @@ public class Spaceship {
     Point3D position;
 
 
-    Spaceship(float x, float y, float z , ObjLoader loader){
+    Spaceship(float x, float y, float z ){
         position = new Point3D(x,y,z);
+        ObjLoader loader2 = new ObjLoader();
 
-        model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
+        model = loader2.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
 
     }
 

@@ -4,7 +4,8 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL11;
-import com.badlogic.gdx.graphics.g3d.model.still.StillModel;
+//import com.badlogic.gdx.graphics.g3d.loaders.obj.ObjLoader;
+import com.badlogic.gdx.graphics.Mesh;
 
 
 
@@ -22,7 +23,8 @@ public class Assignment3Base implements ApplicationListener
     Box bo;
     float acc = 0;
     private float rotationAngle;
-    StillModel model;
+    Mesh model;
+    Spaceship space;
     Point3D position;
 
     @Override
@@ -72,8 +74,9 @@ public class Assignment3Base implements ApplicationListener
         bobo.setDirection(-1, -1, -1);
         dodo.setDirection(1,1,1);
         dodo.pen.setTex("Textures/LavaAstero2.png");
-//        ObjLoader loader = new ObjLoader();
-//        model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
+       space = new Spaceship(0.0f,0.0f,0.f);
+      //  ObjLoader loader = new ObjLoader();
+      //  model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
 
 
 
@@ -220,6 +223,7 @@ public class Assignment3Base implements ApplicationListener
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
+        space.drawSpaceship();
 //        Gdx.gl11.glPushMatrix();
 //        Gdx.gl11.glPushMatrix();
 //        Gdx.gl11.glTranslatef(position.x, position.y, position.z);
