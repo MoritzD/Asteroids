@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL11;
+import com.badlogic.gdx.graphics.g3d.model.still.StillModel;
+
 
 
 public class Assignment3Base implements ApplicationListener
@@ -20,6 +22,8 @@ public class Assignment3Base implements ApplicationListener
     Box bo;
     float acc = 0;
     private float rotationAngle;
+    StillModel model;
+    Point3D position;
 
     @Override
     public void create() {
@@ -30,11 +34,12 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glEnable(GL11.GL_LIGHT2);
         Gdx.gl11.glEnable(GL11.GL_DEPTH_TEST);
 
-        Gdx.gl11.glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+        Gdx.gl11.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         Gdx.gl11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
         Gdx.gl11.glEnable(GL11.GL_NORMALIZE);
+
 
 
         camFirstPerson = new Camera();
@@ -64,9 +69,12 @@ public class Assignment3Base implements ApplicationListener
         bobo = new Dodecahedron();
         bobo.setCenter(5,5,5);
         dodo.setCenter(-5,-5,-5);
-        bobo.setDirection(-1,-1,-1);
+        bobo.setDirection(-1, -1, -1);
         dodo.setDirection(1,1,1);
         dodo.pen.setTex("Textures/LavaAstero2.png");
+//        ObjLoader loader = new ObjLoader();
+//        model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
+
 
 
 
@@ -212,6 +220,14 @@ public class Assignment3Base implements ApplicationListener
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
+//        Gdx.gl11.glPushMatrix();
+//        Gdx.gl11.glPushMatrix();
+//        Gdx.gl11.glTranslatef(position.x, position.y, position.z);
+//        Gdx.gl11.glRotatef(180, 0, 1, 0);
+//        model.render();
+//        Gdx.gl11.glPopMatrix();
+
+
 
 
 
@@ -235,6 +251,11 @@ public class Assignment3Base implements ApplicationListener
     @Override
     public void resume() {
         // TODO Auto-generated method stub
+
+    }
+    public void SpaceshipPos(float x, float y, float z ){
+
+        position = new Point3D(x,y,z);
 
     }
 
