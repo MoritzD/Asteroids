@@ -72,11 +72,15 @@ public class Assignment3Base implements ApplicationListener
         bobo.setDirection(-1, -1, -1);
         dodo.setDirection(1,1,1);
         dodo.pen.setTex("Textures/LavaAstero2.png");
-       space = new Spaceship(0.0f,0.0f,0.f);
+        Gdx.gl11.glPushMatrix();
+        space = new Spaceship(-5.0f,0.0f,0.f);
+        Gdx.gl11.glPopMatrix();
       //  ObjLoader loader = new ObjLoader();
       //  model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
-        bobo.setDirection(0,0,-1);
-        dodo.setDirection(1,1,0);
+//        bobo.setDirection(0,0,-1);
+//        dodo.setDirection(1,1,0);
+        bobo.setDirection(-1,-1,-1);
+        dodo.setDirection(1,1,1);
 
 
 
@@ -200,7 +204,7 @@ public class Assignment3Base implements ApplicationListener
 
         float[] lightPosition2 = {5.0f, 10.0f, -5.0f, 0.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPosition2, 0);
-
+        space.drawSpaceship();
         //bo.draw();
 
         Gdx.gl11.glPushMatrix();
@@ -221,7 +225,7 @@ public class Assignment3Base implements ApplicationListener
        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
-        space.drawSpaceship();
+
 
 
 

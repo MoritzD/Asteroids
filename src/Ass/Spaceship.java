@@ -18,7 +18,7 @@ public class Spaceship {
         position = new Point3D(x,y,z);
         ObjLoader loader2 = new ObjLoader();
 
-        model = loader2.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
+        model = loader2.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle.obj"), true);
 
     }
 
@@ -33,11 +33,14 @@ public void createSpaceship()
 public void drawSpaceship(){
 
     Gdx.gl11.glPushMatrix();
-    Gdx.gl11.glPushMatrix();
     Gdx.gl11.glTranslatef(position.x, position.y, position.z);
+    Gdx.gl11.glPushMatrix();
+    Gdx.gl11.glScalef(0.05f,0.05f,0.05f);
     Gdx.gl11.glRotatef(180, 0, 1, 0);
     model.render();
     Gdx.gl11.glPopMatrix();
+    Gdx.gl11.glPopMatrix();
+
 }
 
 
