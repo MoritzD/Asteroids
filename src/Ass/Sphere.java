@@ -4,9 +4,9 @@ package Ass;
  * Created by Alexander on 23/10/2014.
  */
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.graphics.Texture;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
@@ -97,26 +97,26 @@ public class Sphere {
 
         public void draw()
         {
-            Gdx.gl11.glShadeModel(GL11.GL_SMOOTH);
-            Gdx.gl11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
-            Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
-            Gdx.gl11.glNormalPointer(GL11.GL_FLOAT, 0, normalBuffer);
+            GL11.glShadeModel(GL11.GL_SMOOTH);
+            GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
+            GL11.glVertexPointer(3, GL11.GL_FLOAT, vertexBuffer);
+            GL11.glNormalPointer(GL11.GL_FLOAT, normalBuffer);
 
-            Gdx.gl11.glEnable(GL11.GL_TEXTURE_2D);
-            Gdx.gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
-            Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
+            GL11.glTexCoordPointer(2, GL11.GL_FLOAT, texCoordBuffer);
             tex.bind();
-            Gdx.gl11.glTranslatef(position.x, position.y,  position.z);
-            Gdx.gl11.glScalef(scale.x,scale.y,scale.z);
-            Gdx.gl11.glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
+            GL11.glTranslatef(position.x, position.y,  position.z);
+            GL11.glScalef(scale.x,scale.y,scale.z);
+            GL11.glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
             for(int i = 0; i < vertexCount; i += (slices+1)*2)
             {
-                Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, i, (slices+1)*2);
+                GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, i, (slices+1)*2);
             }
-            Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);
-            Gdx.gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-            Gdx.gl11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+            GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
         }
 
     public void setTexture(String fileLocation) {

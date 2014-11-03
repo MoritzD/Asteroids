@@ -3,8 +3,12 @@ package Ass;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL11;
-
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.utils.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import java.nio.FloatBuffer;
 
 
 public class Assignment3Base implements ApplicationListener
@@ -25,20 +29,24 @@ public class Assignment3Base implements ApplicationListener
     Spaceship space;
     Point3D position;
 
+
+    PerspectiveCamera cam;
+    CameraInputController camController;
+
     @Override
     public void create() {
         // TODO Auto-generated method stub
-        Gdx.gl11.glEnable(GL11.GL_LIGHTING);
-        Gdx.gl11.glEnable(GL11.GL_LIGHT0);
-        Gdx.gl11.glEnable(GL11.GL_LIGHT1);
-        Gdx.gl11.glEnable(GL11.GL_LIGHT2);
-        Gdx.gl11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHT0);
+        GL11.glEnable(GL11.GL_LIGHT1);
+        GL11.glEnable(GL11.GL_LIGHT2);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
-        Gdx.gl11.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GL11.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        Gdx.gl11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
-        Gdx.gl11.glEnable(GL11.GL_NORMALIZE);
+        GL11.glEnable(GL11.GL_NORMALIZE);
 
 
 
@@ -51,6 +59,16 @@ public class Assignment3Base implements ApplicationListener
 
         camTopDown = new Camera();
         camTopDown.perspective(40.0f, 1.777778f, 5.0f, 20.0f);
+
+        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.position.set(1f, 1f, 1f);
+        cam.lookAt(0,0,0);
+        cam.near = 1f;
+        cam.far = 300f;
+        cam.update();
+
+        camController = new CameraInputController(cam);
+        Gdx.input.setInputProcessor(camController);
 
         hex = new Hexagon();
         hex2 = new Hexagon();
@@ -71,16 +89,17 @@ public class Assignment3Base implements ApplicationListener
         dodo.setCenter(-5,-5,-5);
         bobo.setDirection(-1, -1, -1);
         dodo.setDirection(1,1,1);
-        dodo.pen.setTex("Textures/LavaAstero2.png");
-        Gdx.gl11.glPushMatrix();
+        dodo.pen.setTex("Textures/pentagon4.png");
+        GL11.glPushMatrix();
         space = new Spaceship(-5.0f,0.0f,0.f);
-        Gdx.gl11.glPopMatrix();
+        GL11.glPopMatrix();
+
       //  ObjLoader loader = new ObjLoader();
       //  model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
 //        bobo.setDirection(0,0,-1);
 //        dodo.setDirection(1,1,0);
-        bobo.setDirection(-1,-1,-1);
-        dodo.setDirection(1,1,1);
+        bobo.setDirection(0,0,0);
+        dodo.setDirection(0,0,0);
 
 
 
@@ -184,45 +203,55 @@ public class Assignment3Base implements ApplicationListener
 
     private void display()
     {
-        Gdx.gl11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+        camController.update();
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        camFirstPerson.setMatrices();
-        float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
-        Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse, 0);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-        float[] lightPosition = {0.0f, 0.0f, 15.0f, 1.0f};
-        Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
+        //camFirstPerson.setMatrices();
+        FloatBuffer lightDiffuse =  BufferUtils.newFloatBuffer(4).put(new float[] {1.0f, 1.0f, 1.0f, 1.0f});
+        lightDiffuse.rewind();
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse);
 
-        float[] lightDiffuse1 = {1.0f, 1.0f, 1.0f, 1.0f};
-        Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1, 0);
+        FloatBuffer lightPosition = BufferUtils.newFloatBuffer(4).put(new float[] {0.0f, 0.0f, 15.0f, 1.0f});
+        lightPosition.rewind();
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition);
 
-        float[] lightPosition1 = {-5.0f, -10.0f, -13.0f, 0.0f};
-        Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0);
+        FloatBuffer lightDiffuse1 = BufferUtils.newFloatBuffer(4).put(new float[] {1.0f, 1.0f, 1.0f, 1.0f});
+        lightDiffuse1.rewind();
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1);
 
-        float[] lightDiffuse2 = {1.0f, 1.0f, 1.0f, 1.0f};
-        Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, lightDiffuse2, 0);
+        FloatBuffer lightPosition1 = BufferUtils.newFloatBuffer(4).put(new float[] {-5.0f, -10.0f, -13.0f, 0.0f});
+        lightPosition1.rewind();
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1);
 
-        float[] lightPosition2 = {5.0f, 10.0f, -5.0f, 0.0f};
-        Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPosition2, 0);
+        FloatBuffer lightDiffuse2 = BufferUtils.newFloatBuffer(4).put(new float[] {1.0f, 1.0f, 1.0f, 1.0f});
+        lightDiffuse2.rewind();
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, lightDiffuse2);
+
+        FloatBuffer lightPosition2 = BufferUtils.newFloatBuffer(4).put(new float[] {5.0f, 10.0f, -5.0f, 0.0f});
+        lightPosition2.rewind();
+        GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPosition2);
         space.drawSpaceship();
         //bo.draw();
 
-        Gdx.gl11.glPushMatrix();
-        float[] materialDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
-        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
-        Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.0f);
-        //Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
+        GL11.glPushMatrix();
+        FloatBuffer materialDiffuse = BufferUtils.newFloatBuffer(4).put(new float[] {1.0f, 1.0f, 1.0f, 1.0f});
+        materialDiffuse.rewind();
+        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse);
+        GL11.glTranslatef(0.0f, 0.0f, -2.0f);
+        //GL11.glScalef(0.1f,0.1f,0.1f);
         //hex.draw();
-        Gdx.gl11.glPopMatrix();
+        GL11.glPopMatrix();
 
-        Gdx.gl11.glPushMatrix();
+        GL11.glPushMatrix();
         planetEarth.setRotationAngle(rotationAngle);
         planetEarth.draw();
-        Gdx.gl11.glPopMatrix();
+        GL11.glPopMatrix();
 
-        //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
+        //GL11.glScalef(5.0f,0.5f,1.0f);
        // pen.draw();
-       // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
+       // GL11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
 

@@ -2,6 +2,7 @@ package Ass;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.util.Random;
@@ -135,6 +136,7 @@ public class Dodecahedron {
 
                 rotationangel1 -= (float) Math.toRadians(72);
             }
+            /*
             rotationangel1 = -(float) Math.toRadians(180 + 36);
             int Left = 2, Right = 3;
             for (int t = 1; t < 6; t++) {
@@ -150,11 +152,10 @@ public class Dodecahedron {
                 });      //6
 
             rotationangel1 -= (float)Math.toRadians(72);
-        }
+        }*/
 
-        rotationangel1 = -(float) Math.toRadians(180+36);
-         Left = 2;
-         Right = 3;
+        rotationangel1 = (float) Math.toRadians(36);
+        int Left = 2, Right = 3;
         for(int t = 1; t<6; t++){
             texCoordBufferUp[t] = BufferUtils.newFloatBuffer(14);
             texCoordBufferUp[t].put(new float[]{
@@ -193,9 +194,9 @@ public class Dodecahedron {
             });      //6
 
 
-            texCoordBufferUp[0].rewind();
             texCoordBufferUp[0].put(0, getMiddlePoint(0, true)[0]);
             texCoordBufferUp[0].put(1, getMiddlePoint(0, true)[1]);
+            texCoordBufferUp[0].rewind();
         /*
         texCoordBufferUp[2] = BufferUtils.newFloatBuffer(14);
         texCoordBufferUp[2].put(new float[]{
@@ -261,21 +262,26 @@ public class Dodecahedron {
     private float[] getMiddlePoint(int buff, boolean Up) {
         float sum[] = {0.0f,0.0f};
         if(Up){
-           /* for (int e= 2 ; e < 12; e += 2) {
+            for (int e= 2 ; e < 10; e += 2) {
                 sum[0] += texCoordBufferUp[buff].get(e);
             }
-            for (int e= 1 ; e < 12; e += 2) {
+            for (int e= 1 ; e < 10; e += 2) {
                 sum[1] += texCoordBufferUp[buff].get(e);
             }
-            sum[0] = sum[0]/5;
-            sum[1] = sum[1]/6;
-           */ //return sum;
+            sum[0] = sum[0]/4;
+            sum[1] = sum[1]/4;
+           //return sum;
        //     sum[0] = (texCoordBufferUp[buff].get(8) + texCoordBufferUp[buff].get(2))/2;
        //     sum[1] = (texCoordBufferUp[buff].get(11) + texCoordBufferUp[buff].get(5))/2;
-            sum[0] = texCoordBufferUp[buff].get(6) + ((0.31f * Scalefaktor) * (float) Math.cos(rotationangel1) - (-0.30f * Scalefaktor) * (float) Math.sin(rotationangel1));  // 0 x
-            sum[1] = texCoordBufferUp[buff].get(7) + ((0.31f * Scalefaktor) * (float) Math.sin(rotationangel1) + (-0.30f * Scalefaktor) * (float) Math.cos(rotationangel1)); // 0 y
-
-
+            //sum[0] = texCoordBufferUp[buff].get(6) + ((0.31f * Scalefaktor) * (float) Math.cos(rotationangel1) - (-0.30f * Scalefaktor) * (float) Math.sin(rotationangel1));  // 0 x
+            //sum[1] = texCoordBufferUp[buff].get(7) + ((0.31f * Scalefaktor) * (float) Math.sin(rotationangel1) + (-0.30f * Scalefaktor) * (float) Math.cos(rotationangel1)); // 0 y
+            //if(buff != 5) {
+            //    sum[0] = texCoordBufferUp[buff].get(10) + texCoordBuffer[0].get((5 - buff)*2);
+            //    sum[1] = texCoordBufferUp[buff].get(11) + texCoordBuffer[0].get(((5 - buff)*2)+1);
+            //}else{
+            //    sum[0] = texCoordBufferUp[buff].get(10) + texCoordBuffer[0].get(10);
+            //    sum[1] = texCoordBufferUp[buff].get(11) + texCoordBuffer[0].get(11);
+            //}
             return sum;
         }
         else{
@@ -299,29 +305,29 @@ public class Dodecahedron {
 
 
 
-        Gdx.gl11.glPushMatrix();
-        Gdx.gl11.glTranslatef(this.center.x,this.center.y,this.center.z);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(this.center.x,this.center.y,this.center.z);
 
 
 
-        Gdx.gl11.glPushMatrix();
+        GL11.glPushMatrix();
 
         pen.texCoordBuffer = texCoordBuffer[0];
 
-        Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
-        Gdx.gl11.glTranslatef(0.0f, 0.0f, 2.62f/2);
+        GL11.glRotatef(90, 1.0f, 0.0f, 0.0f);
+        GL11.glTranslatef(0.0f, 0.0f, 2.62f/2);
 
 
-                Gdx.gl11.glTranslatef(0.0f,0.0f,-distanceFaktor/2);
+                GL11.glTranslatef(0.0f,0.0f,-distanceFaktor/2);
 
-                Gdx.gl11.glPushMatrix();
-                Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
-                Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
-                Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
+                GL11.glPushMatrix();
+                GL11.glTranslatef(0.0f,0.0f,explodefactor);
+                GL11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                GL11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
         pen.draw();
-                Gdx.gl11.glPopMatrix();
+                GL11.glPopMatrix();
 
-        Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
+        GL11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
 
         //pen.texCoordBuffer = texCoordBuffer[1];
         boolean first = true;
@@ -332,67 +338,67 @@ public class Dodecahedron {
            // }else{
            //     pen.texCoordBuffer = texCoordBuffer[0];
            // }
-            Gdx.gl11.glPushMatrix();
-            Gdx.gl11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            //Gdx.gl11.glTranslatef(0.0f, 1.6f, 0.0f);
+            GL11.glPushMatrix();
+            GL11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
+            //GL11.glTranslatef(0.0f, 1.6f, 0.0f);
 
-            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
-            Gdx.gl11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
+            GL11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+            GL11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
 
-            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
-                    Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
-                    Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
-                    Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
+            GL11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+                    GL11.glTranslatef(0.0f,0.0f,explodefactor);
+                    GL11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                    GL11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
 
             pen.draw();
-            Gdx.gl11.glPopMatrix();
+            GL11.glPopMatrix();
             //first = false;
         }
-        Gdx.gl11.glPopMatrix();
+        GL11.glPopMatrix();
 
-        Gdx.gl11.glPushMatrix();
+        GL11.glPushMatrix();
 
 
-        Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
-        Gdx.gl11.glTranslatef(0.0f, 0.0f, -2.62f/2);
-                Gdx.gl11.glTranslatef(0.0f,0.0f,distanceFaktor/2);
-        Gdx.gl11.glRotatef(180, 1.0f, 0.0f, 0.0f);
+        GL11.glRotatef(90, 1.0f, 0.0f, 0.0f);
+        GL11.glTranslatef(0.0f, 0.0f, -2.62f/2);
+                GL11.glTranslatef(0.0f,0.0f,distanceFaktor/2);
+        GL11.glRotatef(180, 1.0f, 0.0f, 0.0f);
 
         pen.texCoordBuffer = texCoordBufferUp[0];
         //pen.texCoordBuffer = texCoordBuffer[0];
 
-                Gdx.gl11.glPushMatrix();
-                Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
-                Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
-                Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
+                GL11.glPushMatrix();
+                GL11.glTranslatef(0.0f,0.0f,explodefactor);
+                GL11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                GL11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
         pen.draw();
-                Gdx.gl11.glPopMatrix();
+                GL11.glPopMatrix();
 
         i=1;
 
-        Gdx.gl11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
+        GL11.glRotatef(72/2, 0.0f, 0.0f, 1.0f);
         for(int angle = 0; angle < 360 ; angle +=72) {
             //if(i<3){
             pen.texCoordBuffer = texCoordBufferUp[i++];
             //}else{
             //     pen.texCoordBuffer = texCoordBuffer[0];
             // }
-            Gdx.gl11.glPushMatrix();
-            Gdx.gl11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            //Gdx.gl11.glTranslatef(0.0f, 1.4f, 0.0f);
+            GL11.glPushMatrix();
+            GL11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
+            //GL11.glTranslatef(0.0f, 1.4f, 0.0f);
 
-            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
-            Gdx.gl11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
+            GL11.glTranslatef(0.0f, 0.809016994f, 0.0f); //0.783
+            GL11.glRotatef(-63.5f, 1.0f, 0.0f, 0.0f);
 
-            Gdx.gl11.glTranslatef(0.0f, 0.809016994f, 0.0f);
-                    Gdx.gl11.glTranslatef(0.0f,0.0f,explodefactor);
-                    Gdx.gl11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
-                    Gdx.gl11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
+            GL11.glTranslatef(0.0f, 0.809016994f, 0.0f);
+                    GL11.glTranslatef(0.0f,0.0f,explodefactor);
+                    GL11.glScalef(explodeScaleFactor,explodeScaleFactor,explodeScaleFactor);
+                    GL11.glRotatef(explodefactor*100,0.0f,0.0f,1.0f);
             pen.draw();
-            Gdx.gl11.glPopMatrix();
+            GL11.glPopMatrix();
         }
-        Gdx.gl11.glPopMatrix();
-        Gdx.gl11.glPopMatrix();
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
 
 
     }

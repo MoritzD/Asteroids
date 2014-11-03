@@ -1,8 +1,11 @@
 package Ass;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
+import java.nio.FloatBuffer;
 
 public class Camera
 {
@@ -53,6 +56,7 @@ public class Camera
 	public void setModelViewMatrix()
 	{
 		Vector3D minusEye = Vector3D.difference(new Point3D(0,0,0), eye);
+
 		
 		float[] matrix = new float[16];
 		matrix[0] = u.x;	matrix[4] = u.y;	matrix[8] = u.z;	matrix[12] = Vector3D.dot(minusEye, u);
@@ -60,8 +64,10 @@ public class Camera
 		matrix[2] = n.x;	matrix[6] = n.y;	matrix[10] = n.z;	matrix[14] = Vector3D.dot(minusEye, n);
 		matrix[3] = 0;		matrix[7] = 0;		matrix[11] = 0;		matrix[15] = 1;
 		
-		Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW);
-		Gdx.gl11.glLoadMatrixf(matrix, 0);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        FloatBuffer matrixbuff =  BufferUtils.newFloatBuffer(16).put(matrix);
+        matrixbuff.rewind();
+		GL11.glLoadMatrix(matrixbuff);
 	}
 	
 	public void setProjectionMatrix()
@@ -72,8 +78,10 @@ public class Camera
 		matrix[2] = 0;	matrix[6] = 0;	matrix[10] = -(F+N)/(F-N);	matrix[14] = -(2*F*N)/(F-N);
 		matrix[3] = 0;		matrix[7] = 0;		matrix[11] = -1;		matrix[15] = 0;
 
-		Gdx.gl11.glMatrixMode(GL11.GL_PROJECTION);
-		Gdx.gl11.glLoadMatrixf(matrix, 0);
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+        FloatBuffer matrixbuff =  BufferUtils.newFloatBuffer(16).put(matrix);
+        matrixbuff.rewind();
+		GL11.glLoadMatrix(matrixbuff);
 	}
 	
 	public void setMatrices()
