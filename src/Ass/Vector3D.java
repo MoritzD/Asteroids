@@ -80,4 +80,9 @@ public class Vector3D
         y *=-1;
         z *=-1;
     }
+    public static Vector3D mult(float s, Vector3D v)
+    {
+        return new Vector3D(s*v.x, s*v.y, s*v.z);
+    }
+
 }

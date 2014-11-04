@@ -22,7 +22,7 @@ public class Sphere {
         boolean vertexExists = false;
         private Texture tex;
         private Point3D position = new Point3D(0,0,0);
-        private Point3D scale = new Point3D(0,0,0);
+        private Vector3D scale = new Vector3D(1,1,1);
 
     public void setRotationAngle(float rotationAngle) {
         this.rotationAngle = rotationAngle;
@@ -81,11 +81,11 @@ public class Sphere {
             }
 
         }
-         public void setPosition(int x, int y, int z) {
+         public void setPosition(float x, float y, float z) {
 
-             position.x=(float)x;
-             position.y=(float)y;
-             position.z=(float)z;
+             position.x=x;
+             position.y=y;
+             position.z=z;
 
         }
         public void scale(float x, float y, float z){
@@ -97,16 +97,20 @@ public class Sphere {
 
         public void draw()
         {
+            Gdx.gl11.glPushMatrix();
             Gdx.gl11.glShadeModel(GL11.GL_SMOOTH);
             Gdx.gl11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
             Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
             Gdx.gl11.glNormalPointer(GL11.GL_FLOAT, 0, normalBuffer);
 
-            Gdx.gl11.glEnable(GL11.GL_TEXTURE_2D);
-            Gdx.gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-
+            if(tex != null) {
+                Gdx.gl11.glEnable(GL11.GL_TEXTURE_2D);
+                Gdx.gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+            }
             Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
-            tex.bind();
+            if(tex != null) {
+                tex.bind();
+            }
             Gdx.gl11.glTranslatef(position.x, position.y,  position.z);
             Gdx.gl11.glScalef(scale.x,scale.y,scale.z);
             Gdx.gl11.glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
@@ -117,6 +121,7 @@ public class Sphere {
             Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);
             Gdx.gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
             Gdx.gl11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
+            Gdx.gl11.glPopMatrix();
         }
 
     public void setTexture(String fileLocation) {

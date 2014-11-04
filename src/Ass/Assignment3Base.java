@@ -17,13 +17,25 @@ public class Assignment3Base implements ApplicationListener
     Hexagon hex3;
     Pentagon pen;
     Sphere planetEarth;
+    Sphere sun;
+    Sphere sky;
     Dodecahedron dodo, bobo;
     Box bo;
     float acc = 0;
     private float rotationAngle;
+
+    ParticleEffect particl;
+    boolean power = false;
+    boolean wjusttouched = false;
     
     Spaceship space;
     Point3D position;
+
+    float speedfactorrot = 2.0f;
+    float speedfactormove = 2.0f;
+
+    Vector3D camSpeed;
+    Vector3D camRotation;
 
     @Override
     public void create() {
@@ -44,7 +56,7 @@ public class Assignment3Base implements ApplicationListener
 
         camFirstPerson = new Camera();
         camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 8.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
-        camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 40.0f);
+        camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 200.0f);
 
         camThirdPerson = new Camera();
         camThirdPerson.perspective(50.0f, 1.777778f, 0.01f, 40.0f);
@@ -56,11 +68,20 @@ public class Assignment3Base implements ApplicationListener
         hex2 = new Hexagon();
         hex3 = new Hexagon();
         pen = new Pentagon();
+        camSpeed = new Vector3D(0,0,0);
+        camRotation = new Vector3D(0,0,0);
+
+        sun = new Sphere(12,24);
 
         planetEarth = new Sphere(12, 24);
         planetEarth.setTexture("Textures/earth_texture1024x512.png");
         planetEarth.setPosition(0, 0, -30);
         planetEarth.scale(10,10,10);
+
+        sky = new Sphere(12, 24);
+        sky.setTexture("Textures/awsomesky_4096.png");
+        sky.setPosition(0, 0, 0);
+        sky.scale(100,100,100);
 
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
@@ -81,6 +102,8 @@ public class Assignment3Base implements ApplicationListener
 //        dodo.setDirection(1,1,0);
         bobo.setDirection(-1,-1,-1);
         dodo.setDirection(1,1,1);
+
+        particl = new ParticleEffect();
 
 
 
@@ -103,13 +126,14 @@ public class Assignment3Base implements ApplicationListener
 
     private void update()
     {
-        float deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        power = false;
         rotationAngle += 90.0f * deltaTime;
         bobo.movement();
         dodo.movement();
 
 
-
+        particl.update(deltaTime);
 
 
 
@@ -121,47 +145,119 @@ public class Assignment3Base implements ApplicationListener
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP))
         {
-            camFirstPerson.pitch(-90.0f * deltaTime);
+            if(camRotation.x > -90.0f)
+                camRotation.x -= (20.0f*deltaTime)*speedfactorrot;
+
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
-            camFirstPerson.pitch(90.0f * deltaTime);
+            if(camRotation.x < 90.0f) {
+                camRotation.x += (20.0f*deltaTime)*speedfactorrot;
+            }
         }
+        camFirstPerson.pitch(camRotation.x * deltaTime);
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
-            camFirstPerson.yaw(-90.0f * deltaTime);
+            if(camRotation.y > -90.0f) {
+                camRotation.y -= (20.0f*deltaTime)*speedfactorrot;
+            }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {
-            camFirstPerson.yaw(90.0f * deltaTime);
+            if(camRotation.y < 90.0f) {
+                camRotation.y += (20.0f*deltaTime)*speedfactorrot;
+            }
         }
+        camFirstPerson.yaw(camRotation.y * deltaTime);
         if(Gdx.input.isKeyPressed(Input.Keys.W))
         {
-            camFirstPerson.slide(0.0f, 0.0f, -10.0f * deltaTime);
+            if(!wjusttouched){                                      // w just pressed
+                particl.reset();
+                //particl.burning=true;
+            }
+            if(camSpeed.z > -5.0f)
+                camSpeed.z -= deltaTime * speedfactormove;
+            power = true;
         }
+        if(!Gdx.input.isKeyPressed(Input.Keys.W) && wjusttouched)   // W just released
+        {
+            particl.end();
+        }
+        //if(Gdx.input.isKeyPressed(Input.Keys.I)) {
+        //}
+        wjusttouched = Gdx.input.isKeyPressed(Input.Keys.W);
         if(Gdx.input.isKeyPressed(Input.Keys.S))
         {
-            camFirstPerson.slide(0.0f, 0.0f, 10.0f * deltaTime);
+            if(camSpeed.z < 5.0f)
+                camSpeed.z += 0.7f*deltaTime * speedfactormove;
         }
+        camFirstPerson.slide(0.0f, 0.0f, camSpeed.z*deltaTime);
         if(Gdx.input.isKeyPressed(Input.Keys.A))
         {
-            camFirstPerson.slide(-10.0f * deltaTime, 0.0f, 0.0f);
+            if(camSpeed.x > -5.0f)
+                camSpeed.x -= 0.7f*deltaTime * speedfactormove;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D))
         {
-            camFirstPerson.slide(10.0f * deltaTime, 0.0f, 0.0f);
+            if(camSpeed.x < 5.0f)
+                camSpeed.x += 0.7f*deltaTime* speedfactormove;
         }
+        camFirstPerson.slide(camSpeed.x*deltaTime, 0.0f,0.0f);
 
 
         if(Gdx.input.isKeyPressed(Input.Keys.R))
         {
-            camFirstPerson.slide(0.0f, 10.0f * deltaTime, 0.0f);
+            if(camSpeed.y > 5.0f)
+            camSpeed.y += 0.7f*deltaTime* speedfactormove;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.F))
         {
-            camFirstPerson.slide(0.0f, -10.0f * deltaTime, 0.0f);
+            if(camSpeed.y < -5.0f)
+                camSpeed.y -= 0.7f*deltaTime* speedfactormove;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.Q))
+        camFirstPerson.slide(0.0f ,camSpeed.y*deltaTime, 0.0f);
+
+        if(Gdx.input.isKeyPressed(Input.Keys.V))
+        {
+            if(camSpeed.x > 0){
+                camSpeed.x -=1.0*deltaTime * speedfactormove;
+            }
+            else if(camSpeed.x < 0) {
+                camSpeed.x += 1.0 * deltaTime * speedfactormove;
+            }
+            if(camSpeed.y > 0){
+                camSpeed.y -=1.0*deltaTime * speedfactormove;
+            }
+            else if(camSpeed.y < 0) {
+                camSpeed.y += 1.0 * deltaTime * speedfactormove;
+            }
+            if(camSpeed.z > 0){
+                camSpeed.z -=1.0*deltaTime * speedfactormove;
+            }
+            else if(camSpeed.z < 0) {
+                camSpeed.z += 1.0 * deltaTime * speedfactormove;
+            }
+
+            if(camRotation.x > 0){
+                camRotation.x -= 20.0*deltaTime * speedfactorrot;
+            }
+            else if(camRotation.x < 0) {
+                camRotation.x += 20.0 * deltaTime * speedfactorrot;
+            }
+            if(camRotation.y > 0){
+                camRotation.y -= 20.0*deltaTime * speedfactorrot;
+            }
+            else if(camRotation.y < 0) {
+                camRotation.y += 20.0 * deltaTime * speedfactorrot;
+            }
+            if(camRotation.y > 0){
+                camRotation.y -= 20.0*deltaTime * speedfactorrot;
+            }
+            else if(camRotation.y < 0) {
+                camRotation.y += 20.0 * deltaTime * speedfactorrot;
+            }
+        }
+            if(Gdx.input.isKeyPressed(Input.Keys.Q))
         {
             dodo.explodefactor = 0;
             dodo.explodeScaleFactor =  1;
@@ -187,6 +283,9 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 
         camFirstPerson.setMatrices();
+        float[] lightAmbient = {1.0f, 1.0f, 1.0f, 1.0f};
+        Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_AMBIENT, lightAmbient, 0);
+
         float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse, 0);
 
@@ -196,15 +295,30 @@ public class Assignment3Base implements ApplicationListener
         float[] lightDiffuse1 = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1, 0);
 
-        float[] lightPosition1 = {-5.0f, -10.0f, -13.0f, 0.0f};
+        float[] lightPosition1 = {-5.0f, -10.0f, -13.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0);
 
         float[] lightDiffuse2 = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, lightDiffuse2, 0);
 
-        float[] lightPosition2 = {5.0f, 10.0f, -5.0f, 0.0f};
+        float[] lightPosition2 = {5.0f, 10.0f, -5.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPosition2, 0);
-        space.drawSpaceship();
+
+        float[] materialDiffusesun = {0.5f, 0.5f, 0.5f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffusesun, 0);
+
+        float[] materialambientsun = {5.0f, 5.0f, 5.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambientsun, 0);
+
+
+        sun.setPosition(lightPosition[0],lightPosition[1],lightPosition[2]);
+
+        sun.draw();
+        sun.setPosition((int)lightPosition1[0],(int)lightPosition1[1],(int)lightPosition1[2]);
+        sun.draw();
+        sun.setPosition((int)lightPosition2[0],(int)lightPosition2[1],(int)lightPosition2[2]);
+        sun.draw();
+
         //bo.draw();
 
         Gdx.gl11.glPushMatrix();
@@ -216,13 +330,30 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glPopMatrix();
 
         Gdx.gl11.glPushMatrix();
+
+        float[] materialspecularityearth = {0.0f, 0.0f, 1.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, materialspecularityearth, 0);
+        Gdx.gl11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 5.0f);
+        float[] materialambientearth = {0.8f, 0.8f, 1.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambientearth, 0);
+
+        sky.draw();
+
         planetEarth.setRotationAngle(rotationAngle);
         planetEarth.draw();
+
+        float[] materialspecularityearth2 = {0.0f, 0.0f, 0.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, materialspecularityearth2, 0);
+        Gdx.gl11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 0.0f);
+
+        float[] materialambientearth2 = {0.0f, 0.0f, 0.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambientearth2, 0);
+
         Gdx.gl11.glPopMatrix();
 
         //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
-       // pen.draw();
-       // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
+        // pen.draw();
+        // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
 
@@ -230,7 +361,71 @@ public class Assignment3Base implements ApplicationListener
 
 
 
+        /*space.position.x = camFirstPerson.eye.x+camFirstPerson.n.x;
+        space.position.y = camFirstPerson.eye.y+camFirstPerson.n.y;
+        space.position.z = camFirstPerson.eye.z-camFirstPerson.n.z;
+        */Gdx.gl11.glPushMatrix();
+        //Gdx.gl11.glRotatef(spacepitch,1.0f,0.0f,0.0f);
+        //Gdx.gl11.glRotatef(spaceyaw,0.0f,1.0f,0.0f);
 
+
+
+
+        float[] materialDiffuse2 = {0.5f, 0.5f, 0.5f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse2, 0);
+
+        float[] materialspecularity = {0.5f, 0.5f, 0.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, materialspecularity, 0);
+
+        float[] materialambient = {0.0f, 0.0f, 0.2f, 1.0f};
+        //float[] materialambient = {1.0f, 1.0f, 1.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambient, 0);
+
+        Gdx.gl11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 5.0f);
+
+
+
+        float[] matrix = new float[16];
+        matrix[0] = camFirstPerson.u.x;	matrix[4] = camFirstPerson.v.x;	matrix[8] = camFirstPerson.n.x;	matrix[12] = camFirstPerson.eye.x;
+        matrix[1] = camFirstPerson.u.y;	matrix[5] = camFirstPerson.v.y;	matrix[9] = camFirstPerson.n.y;	matrix[13] = camFirstPerson.eye.y;
+        matrix[2] = camFirstPerson.u.z;	matrix[6] = camFirstPerson.v.z;	matrix[10] = camFirstPerson.n.z;matrix[14] = camFirstPerson.eye.z;
+        matrix[3] = 0;					matrix[7] = 0;					matrix[11] = 0;					matrix[15] = 1;
+
+        Gdx.gl11.glMultMatrixf(matrix, 0);
+
+        Gdx.gl11.glPushMatrix();
+        Gdx.gl11.glTranslatef(5.0f, -1.5f, -2.0f);      //2.0
+        space.drawSpaceship();
+        Gdx.gl11.glPopMatrix();
+
+        Gdx.gl11.glPushMatrix();
+        Gdx.gl11.glTranslatef(0.0f, -0.4f, -0.52f);     //0.52
+        Gdx.gl11.glRotatef(90, 1.0f, 0.0f, 0.0f);
+
+        Gdx.gl11.glPushMatrix();
+        Gdx.gl11.glTranslatef(-0.12f, 0.0f, 0.0f);
+        Gdx.gl11.glScalef(0.2f, 0.2f, 0.2f);
+        particl.display();
+        Gdx.gl11.glPopMatrix();
+
+        Gdx.gl11.glTranslatef(0.12f, 0.0f, 0.0f);
+        Gdx.gl11.glScalef(0.2f, 0.2f, 0.2f);
+        particl.display();
+
+        Gdx.gl11.glPopMatrix();
+
+
+
+
+        float[] materialspecularity2 = {0.0f, 0.0f, 0.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, materialspecularity2, 0);
+
+        float[] materialambient2 = {0.0f, 0.0f, 0.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambient2, 0);
+
+        Gdx.gl11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 0.0f);
+
+        Gdx.gl11.glPopMatrix();
 
 
 
