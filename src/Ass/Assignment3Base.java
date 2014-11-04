@@ -63,6 +63,7 @@ public class Assignment3Base implements ApplicationListener
             tempdodo.setCenter((float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f);
             tempdodo.setDirection((float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f);
             tempdodo.scale = (float) Math.random() * 5.0f;
+            tempdodo.speed = (int)(Math.random() * 5.0f) + 2;
             if(Math.random()>0.50f)
                 tempdodo.pen.setTex("Textures/LavaAstero2.png");
            // else if( Math.random() > 0.5f)
@@ -152,13 +153,16 @@ public class Assignment3Base implements ApplicationListener
 
         for(Dodecahedron ast : astroids){
             ast.movement();
-            if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= (200-ast.scale*2.62f/2)){
-               // ast.speed.
+            if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= Math.pow((200-ast.scale*2.62f/2),2)){
+               ast.direction.inverse();
             }
+        }
+        if(Math.pow(camFirstPerson.eye.x,2)+Math.pow(camFirstPerson.eye.y,2)+Math.pow(camFirstPerson.eye.z,2) >= Math.pow((200-4),2)) {
+            camSpeed.inverse();
         }
 
 
-        particl.update(deltaTime);
+            particl.update(deltaTime);
 
 
 
