@@ -16,10 +16,10 @@ public class Dodecahedron {
     static FloatBuffer[] texCoordBuffer = new FloatBuffer[6];
     static FloatBuffer[] texCoordBufferUp = new FloatBuffer[6]; // Uper half of dodecahedron
     float rotationangel1 = -(float) Math.toRadians(72/2);
-    Vector3D direction;
+    Vector3D moveVector, nextMove = new Vector3D(0,0,0);
     Random rand = new Random();
     float deltaTime ;
-    static float Scalefaktor = 0.25f;              //0.25
+    float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
     protected Point3D center;
     int speed =2;
@@ -502,14 +502,14 @@ public class Dodecahedron {
                 ONEx, ONEy,  // 6
         };
     }*/
-    // changes the direction vector so that the asteroid moves in a random direction
+    // changes the moveVector vector so that the asteroid moves in a random moveVector
     public void movement(){
         deltaTime = Gdx.graphics.getDeltaTime()*0.5f;
 
-        if(direction == null) {
+        if(moveVector == null) {
             float temp1, temp2, temp3;
-            // this is the code that usually generates random direction vectors but I want to test collision so
-            // I want to manually hardcode direction vectors
+            // this is the code that usually generates random moveVector vectors but I want to test collision so
+            // I want to manually hardcode moveVector vectors
             temp1 = rand.nextInt(3);
             if(temp1==2)
                 temp1 = -1;
@@ -525,76 +525,123 @@ public class Dodecahedron {
                 temp3 = rand.nextInt(2);
             }
             this.setDirection(temp1, temp2, temp3);
+            this.createMoveVector(speed);
 
         }
         else{
-            if(direction.x == 0.0f)
-             ;
-            else{
 
-              //  System.out.println("Never get here"+deltaTime);
-                if(direction.x>0)
-                   this.center.x +=speed*deltaTime;
-                else
-                   this.center.x-=speed*deltaTime;
+            center.add(Vector3D.scale(moveVector,deltaTime));
 
-            }
-
-            if(direction.y == 0.0f)
-                ;
-            else{
-
-              //  System.out.println("Never get here"+deltaTime);
-                if(direction.y>0)
-                    this.center.y +=speed*deltaTime;
-                else
-                    this.center.y-=speed*deltaTime;
-            }
-
-            if(direction.z==0.0f)
-                ;
-            else {
-
-                System.out.println("Never get here"+deltaTime);
-                if(direction.z>0)
-                    this.center.z +=speed*deltaTime;
-                else
-                    this.center.z-=speed*deltaTime;
-            }
+//            System.out.println("moveVector");
+//            moveVector.printVector3D();
+//            System.out.println("nextMove");
+//            nextMove.printVector3D();
         }
 
     }
+
+    private void createMoveVector(float speed) {
+
+        if(moveVector.x == 0.0f)
+            ;
+        else{
+
+            //  System.out.println("Never get here"+deltaTime);
+            if(moveVector.x>0) {
+                moveVector.x+=speed;
+            }
+            else {
+                moveVector.x-=speed;
+            }
+
+        }
+
+        if(moveVector.y == 0.0f)
+            ;
+        else{
+
+            //  System.out.println("Never get here"+deltaTime);
+            if(moveVector.y>0) {
+                moveVector.y+=speed;
+            }
+            else {
+                moveVector.y-=speed;
+            }
+        }
+
+        if(moveVector.z==0.0f)
+            ;
+        else {
+
+            //  System.out.println("Never get here"+deltaTime);
+            if(moveVector.z>0) {
+                moveVector.z+=speed;
+            }
+            else {
+                moveVector.z-=speed;
+            }
+        }
+    }
+
     public  void setCenter(float x, float y, float z){
         center.x = x;
         center.y = y;
         center.z = z;
     }
 
-    public void collision(Dodecahedron asteroid){
+    public void collisionHandling(Dodecahedron asteroid) {
+
+        this.moveVector.times(-1);
+//        if (this.collision(asteroid)) {
+//            System.out.println("Hit!! " + this.center.x + "," + this.center.y);
+//            if (this.moveVector.addition(asteroid.moveVector).isNullVector3D()) {
+//                this.moveVector.inverse();
+//                asteroid.moveVector.inverse();
+//                System.out.println("x =" + moveVector.x + ";y =" + moveVector.y + ";z =" + moveVector.z);
+////            } else {
+////
+////                if (this.moveVector.dot(this.moveVector, asteroid.moveVector) == 0) {
+////
+////                    asteroid.moveVector.inverse();
+//
+//                    //away form incoming vector this.moveVector.rotate(45);
+//
+//                }
+//
+//
+//                // fucking rotations
+//            }
+//        }
+    }
+
+    public void collision(Dodecahedron asteroid){// tried for about a week couldn't make a propper collision work
+        //
 
         //ToDo diffrent cases (x2-x1)^2 + (y1-y2)^2 + (z1-z2)^2 <= (r1+r2)^2)
         // If the distance between the center points is less then the radius of the asteroids summed
         // then we have  a collision
         // at the moment the problem is that the center doesn't move with the decahedron
-
-
+//
+//        if(this.newCollision(asteroid)) {
+////            this.setCenter(this.moveVector.x, this.moveVector.y, this.moveVector.z);
+//
+//            newCollisionHandling(asteroid);
+////            asteroid.setCenter(asteroid.moveVector.x, asteroid.moveVector.y, asteroid.moveVector.z);
+//        }
         if((this.center.x-asteroid.center.x)*(this.center.x-asteroid.center.x) +
            (this.center.y-asteroid.center.x)*(this.center.y-asteroid.center.x) +
            (this.center.z-asteroid.center.z)*(this.center.z-asteroid.center.z)
                 <=(this.radius+asteroid.radius)*(this.radius+asteroid.radius)){
-
-            System.out.println("Hit!! "+this.center.x+","+this.center.y);
-            if(this.direction.addition(asteroid.direction).isNullVector3D()) {
-                this.direction.inverse();
-                asteroid.direction.inverse();
-                //System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+            collisionHandling(asteroid);
+//
+//
+//
             }
-            else{
-                // fucking rotations
-            }
+//        else
 
 
-        }
+
+
 
 
 
@@ -602,11 +649,160 @@ public class Dodecahedron {
 
     }
 
+    private void newCollisionHandling(Dodecahedron ast) {
+        // The normalized vector from asteroid center to asteroid center
+        Vector3D n = new Vector3D(this.center,ast.center);
+        n.normalize();
+        // get the component for each movement
+        float a1 = Vector3D.dot(moveVector, n);
+        float a2 = Vector3D.dot(ast.moveVector, n);
+        // Using the optimized version,
+        // optimizedP =  2(a1 - a2)
+        //              -----------
+        //                m1 + m2
+        float optimizedP = (2.0f*(a1-a2))/(this.Scalefaktor+ast.Scalefaktor);
+        // Calculate v1', the new movement vector of circle1
+        // v1' = v1 - optimizedP * m2 * n
+        float scalar= optimizedP*ast.Scalefaktor;
+
+        Vector3D v1 = Vector3D.scale(n,scalar);
+        v1 = Vector3D.subtraction(moveVector,v1);
+
+        Vector3D v2 = Vector3D.scale(n,scalar);
+        v2= Vector3D.add(ast.moveVector,v2);
+
+
+
+        this.setVelocity(v1.x,v1.y,v1.z);
+        ast.setVelocity(v2.x, v2.y, v2.z);
+
+
+
+    }
+
+    public boolean newCollision(Dodecahedron ast){
+        // This algorithm is based to the algorithm found on this page http://www.gamasutra.com/view/feature/3015/pool_hall_lessons_fast_accurate_.php
+        // with certain changes to make it work in our case
+
+        //If the lenght  of the movementVector moveVector is less than
+        // the distance between the centers of the circles in question
+        // - their sumOfRadii summed there is no way they can hit
+       float dist=this.center.distance(ast.center);
+        float sumOfRadii= this.radius+ast.radius;
+        dist -= sumOfRadii;
+//        Vector3D moveVec3D=Vector3D.subtraction(this.moveVector,ast.moveVector);
+        float lengthOfMoveVector = moveVector.length();
+
+
+        if(lengthOfMoveVector<dist){
+            return false;
+        }
+        //Normalizing the movevect = N
+        Vector3D N = new Vector3D(0,0,0);
+        N.transfer(moveVector);
+        N.normalize();
+
+        //C = the center of the moving asteroid this to the stationary asteroid ast
+        Vector3D C = new Vector3D(this.center,ast.center);
+        // the distance between the center of the moving asteroid and it's it's center along the
+        // move vector before they begin clipping each other
+
+        // here we do a coolinearity check to see if the asteroids are colliding
+        // this is done becasue we're working in 3D space
+        float lengthOfC = C.length();
+
+        if(moveVector.isCollinear(C)){
+            float distanceC = lengthOfC-sumOfRadii;
+            if(lengthOfMoveVector>(lengthOfC-sumOfRadii)){
+
+
+                center = Point3D.vector3DToPoint(Vector3D.scale(N, distanceC));
+                return true;
+
+            }
+            else
+                return false;
+        }
+
+
+        float D =Vector3D.dot(N, C);
+
+        // Annother early escape: Making sure moveVector is moving towards ast
+        // If the dot product between the moveVector and
+        // ast.center - moveVector.center is less that or equal to 0,
+        // moveVector isn't isn't moving towards ast
+        if(D<=0){
+            return false;
+        }
+
+
+        // add some comments
+        float F = (lengthOfC*lengthOfC)-(D*D);
+        // Escape test: if the closest that this will get to ast
+        // is more than the sum of their sumOfRadii, there's no
+        // way they are going collide
+        double radiiSquared = sumOfRadii * sumOfRadii;
+        if(F >= radiiSquared){
+            return false;
+        }
+        // We now have F and sumRadii, two sides of a right triangle.
+        // Use these to find the third side, sqrt(T)
+        // explain T
+        double T = radiiSquared - F;
+
+        // If there is no such right triangle with sides length of
+        // sumOfRadii and sqrt(f), T will probably be less than 0.
+        // Better to check now than perform a square root of a
+        // negative number.
+        if(T < 0){
+            return false;
+        }
+        // Therefore the distance the circle has to travel along
+        // movevec is D - sqrt(T)
+        float distance = D - (float)Math.sqrt(T);
+
+        // Get the length of the movement vector
+
+
+        // Finally, make sure that the distance this has to move
+        // to touch ast is not greater than the length of the
+        // movement vector.
+        if(lengthOfMoveVector < distance){
+            return false;
+        }
+
+        center = Point3D.vector3DToPoint(Vector3D.scale(N, distance));
+
+        // Set the length of the movevec so that the circles will just
+        // touch
+
+
+
+
+        return true;
+
+
+
+
+
+
+    }
+    public void setVelocity(float x, float y, float z){
+        moveVector.x = x;
+        moveVector.y = y;
+        moveVector.z = z;
+        System.out.println("Velocity changed");
+        moveVector.printVector3D();
+    }
+
+
+
     public void setDirection(float x, float y, float z) {
 
 
-        direction = new Vector3D(x, y, z);
-        //System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+        moveVector = new Vector3D(x, y, z);
+        System.out.println("x =" + moveVector.x + ";y =" + moveVector.y + ";z =" + moveVector.z);
+        createMoveVector(speed);
         // }
     }
 }

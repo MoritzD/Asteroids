@@ -28,15 +28,6 @@ public class Spaceship {
         tex2 = new Texture(Gdx.files.internal("Spaceship/CityPatrolVehicle/Maps/cp6b.png"));
 
     }
-
-public void createSpaceship()
-
-    {
-
-
-
-
-    }
 public void drawSpaceship(){
 
     Gdx.gl11.glPushMatrix();

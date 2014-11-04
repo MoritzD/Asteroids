@@ -108,18 +108,18 @@ public class Assignment3Base implements ApplicationListener
         bobo = new Dodecahedron();
         bobo.setCenter(5,5,5);
         dodo.setCenter(-5,-5,-5);
-        bobo.setDirection(-1, -1, -1);
-        dodo.setDirection(1,1,1);
+//        bobo.setDirection(-1, -1, -1);
+//        dodo.setDirection(1,1,1);
         dodo.pen.setTex("Textures/LavaAstero2.png");
         Gdx.gl11.glPushMatrix();
         space = new Spaceship(-5.0f,0.0f,0.f);
         Gdx.gl11.glPopMatrix();
       //  ObjLoader loader = new ObjLoader();
       //  model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
-//        bobo.setDirection(0,0,-1);
-//        dodo.setDirection(1,1,0);
-        bobo.setDirection(-1,-1,-1);
-        dodo.setDirection(1,1,1);
+        bobo.setDirection(0,0,-1);
+        dodo.setDirection(1,1,0);
+//        bobo.setDirection(-1,-1,-1);
+//        dodo.setDirection(1,1,1);
 
         particl = new ParticleEffect();
 
@@ -165,6 +165,8 @@ public class Assignment3Base implements ApplicationListener
        // dodo.collision(bobo);
         // can't do this or it won't work
      //  bobo.collision(dodo);
+
+       dodo.collision(bobo);
 
 
 
@@ -481,6 +483,7 @@ public class Assignment3Base implements ApplicationListener
     public void SpaceshipPos(float x, float y, float z ){
 
         position = new Point3D(x,y,z);
+
 
     }
 

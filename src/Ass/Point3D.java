@@ -29,4 +29,18 @@ public class Point3D
     public Point3D getNewInstance(){
         return new Point3D(this.x,this.y,this.z);
     }
+    // calculates the distance between two 3D points caller this and callee p2
+    public float distance(Point3D p2){
+        float distanceSquaredX = this.x-p2.x;
+        float distanceSquaredY = this.y-p2.y;
+        float distanceSquaredZ = this.z-p2.z;
+        distanceSquaredX*=distanceSquaredX;
+        distanceSquaredY*=distanceSquaredY;
+        distanceSquaredZ*=distanceSquaredZ;
+        return (float)Math.sqrt(distanceSquaredX+distanceSquaredY+distanceSquaredZ);
+    }
+
+    public static Point3D vector3DToPoint(Vector3D scale) {
+        return new Point3D(scale.x,scale.y,scale.z);
+    }
 }

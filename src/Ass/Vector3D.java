@@ -12,6 +12,17 @@ public class Vector3D
 		y = yy;
 		z = zz;
 	}
+    // Create vector from point p1 to point p2
+    public Vector3D(Point3D p1, Point3D p2){
+        x = p2.x - p1.x;
+        y = p2.y - p1.y;
+        z = p2.z - p1.z;
+    }
+    public static Vector3D point3DToVector(Point3D p1){
+
+        return new Vector3D(p1.x, p1.y, p1.z);
+
+    }
 	
 	public void set(float xx, float yy, float zz)
 	{
@@ -52,6 +63,11 @@ public class Vector3D
 	{
 		return new Vector3D(v.x*s, v.y*s, v.z*s);
 	}
+    public void times(float s){
+        x*=s;
+        y*=s;
+        z*=s;
+    }
 	
 	public static Vector3D add(Vector3D v1, Vector3D v2)
 	{
@@ -75,14 +91,33 @@ public class Vector3D
         z = v.z;
     }
 
-    public void inverse() {
-        x *=-1;
-        y *=-1;
-        z *=-1;
+    public static Vector3D inverse(Vector3D v) {
+        v.x *=-1;
+        v.y *=-1;
+        v.z *=-1;
+        return v;
     }
-    public static Vector3D mult(float s, Vector3D v)
-    {
-        return new Vector3D(s*v.x, s*v.y, s*v.z);
+    // This method subtracts the values of v2 from v1 ergo v1 - v2
+    public static Vector3D subtraction(Vector3D v1, Vector3D v2){
+
+        return new Vector3D(v1.x-v2.x,v1.y-v2.y,v1.z-v2.z);
+
+    }
+    public boolean isCollinear(Vector3D v){
+        if(Vector3D.cross(this,v).isNullVector3D()) {
+
+            return true;
+        }
+        else
+            return false;
+    }
+    public void printVector3D(){
+        System.out.println("v.x = "+x+", v.y ="+y+", v.z ="+z);
+    }
+    public void addScalar(float s){
+        x+=s;
+        y+=s;
+        z+=s;
     }
 
 }
