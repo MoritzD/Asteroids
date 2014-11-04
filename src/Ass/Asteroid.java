@@ -17,6 +17,9 @@ public class Asteroid {
     float radius;
     Random rand = new Random();
 
+    boolean killME = false;
+    boolean explode = false;
+
     Asteroid(Dodecahedron dodo) {
         center = new Point3D(0, 0, 0);
         speed = rand.nextFloat() * 5.0f+2;
@@ -43,17 +46,30 @@ public class Asteroid {
     public void movement() {
         deltaTime = Gdx.graphics.getDeltaTime() * 0.5f;
 
+        if(explode){
+            dodo.explodefactor += 5 * deltaTime;
+
+            if(0 < dodo.explodeScaleFactor ) {
+                dodo.explodeScaleFactor -= 2 * deltaTime;
+                // Discard object!
+            }else if( dodo.explodeScaleFactor <= 0){
+                killME = true;
+            }
+        }
         if (moveVector == null) {
             float temp1, temp2, temp3;
             temp1 = rand.nextInt(3);
-            if (temp1 == 2)
+            if (temp1 == 2) {
                 temp1 = -1;
+            }
             temp2 = rand.nextInt(3);
-            if (temp2 == 2)
+            if (temp2 == 2) {
                 temp2 = -1;
+            }
             temp3 = rand.nextInt(3);
-            if (temp3 == 2)
+            if (temp3 == 2) {
                 temp3 = -1;
+            }
             if (temp1 == 0 && temp2 == 0 && temp3 == 0) {
                 temp1 = rand.nextInt(2);
                 temp2 = rand.nextInt(2);
@@ -68,6 +84,12 @@ public class Asteroid {
         }
 
     }
+
+    public void explode(){
+        explode = true;
+    }
+
+
 
     private void createMoveVector(float speed) {
 

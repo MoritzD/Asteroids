@@ -28,11 +28,14 @@ public class Assignment3Base implements ApplicationListener
     ParticleEffect particl;
     boolean power = false;
     boolean wjusttouched = false;
+    boolean oldSpace = false;
     
     Spaceship space;
     Point3D position;
 
     protected ArrayList<Asteroid> asteroids;
+    protected ArrayList<Lazers> shots;
+
     int numastroids = 100;
 
     float speedfactorrot = 2.0f;
@@ -57,6 +60,7 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glEnable(GL11.GL_NORMALIZE);
 
 
+        shots = new ArrayList<Lazers>();
 
 
 
@@ -105,7 +109,7 @@ public class Assignment3Base implements ApplicationListener
 //        bobo.setDirection(-1,-1,-1);
 //        dodo.setDirection(1,1,1);
 
-        particl = new ParticleEffect("Textures/starblue.png");
+        particl = new ParticleEffect("Textures/star03.bmp");
 
         asteroids = new ArrayList<Asteroid>();
         Asteroid tempdodo;
@@ -148,10 +152,15 @@ public class Assignment3Base implements ApplicationListener
         power = false;
         rotationAngle += 90.0f * deltaTime;
 
-        for(Asteroid ast : asteroids){
+        for (int i1 = 0; i1 < asteroids.size(); i1++) {
+            Asteroid ast = asteroids.get(i1);
             ast.movement();
-            if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= Math.pow((200-ast.radius*2.62f/2),2)){
-               ast.moveVector.times(-1);
+            if (Math.pow(ast.center.x, 2) + Math.pow(ast.center.y, 2) + Math.pow(ast.center.z, 2) >= Math.pow((200 - ast.radius * 2.62f / 2), 2)) {
+                ast.moveVector.times(-1);
+            }
+            if (ast.killME) {
+                asteroids.remove(i1);
+
             }
         }
 
@@ -234,12 +243,12 @@ public class Assignment3Base implements ApplicationListener
 
         if(Gdx.input.isKeyPressed(Input.Keys.R))
         {
-            if(camSpeed.y > 5.0f)
+            if(camSpeed.y > -5.0f)
             camSpeed.y += 0.7f*deltaTime* speedfactormove;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.F))
         {
-            if(camSpeed.y < -5.0f)
+            if(camSpeed.y < 5.0f)
                 camSpeed.y -= 0.7f*deltaTime* speedfactormove;
         }
         camFirstPerson.slide(0.0f ,camSpeed.y*deltaTime, 0.0f);
@@ -302,8 +311,31 @@ public class Assignment3Base implements ApplicationListener
             dodo.distanceFaktor = - Math.abs(2 * (float) Math.sin(acc));
             acc += 2*deltaTime;
         }
+        for (int i = 0; i < shots.size(); i++) {
+            Lazers sh = shots.get(i);
 
+            sh.update(deltaTime);
+            if (Math.pow(sh.position.x, 2) + Math.pow(sh.position.y, 2) + Math.pow(sh.position.z, 2) >= Math.pow((200 - 1), 2)) {
+                shots.remove(i);
+            }
+            for (Asteroid ass : asteroids) {
+                if (Math.pow(ass.center.x - sh.position.x, 2) + Math.pow(ass.center.y - sh.position.y, 2) + Math.pow(ass.center.z - sh.position.z, 2) <= Math.pow((2.62f/2)*ass.radius, 2)) {
+                    ass.explode();
+                    shots.remove(i);
+                }
+            }
         }
+
+
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && !oldSpace) {
+            float x=0.0f,y=-0.5f,z=-4.0f;
+            shots.add(new Lazers(new Point3D(camFirstPerson.u.x*x + camFirstPerson.v.x*y + camFirstPerson.n.x*z + camFirstPerson.eye.x
+                    ,camFirstPerson.u.y*x + camFirstPerson.v.y*y + camFirstPerson.n.y*z + camFirstPerson.eye.y
+                    ,camFirstPerson.u.z*x + camFirstPerson.v.z*y + camFirstPerson.n.z*z + camFirstPerson.eye.z),camFirstPerson.u.getNewInstance(),camFirstPerson.v.getNewInstance(),camFirstPerson.n.getNewInstance()));
+        }
+        oldSpace = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+
+    }
 
     private void display()
     {
@@ -375,12 +407,20 @@ public class Assignment3Base implements ApplicationListener
         planetEarth.setRotationAngle(rotationAngle);
         planetEarth.draw();
 
+
+        Gdx.gl11.glPopMatrix();
+
+        for(Lazers sh : shots){
+            sh.draw();
+        }
+
         float[] materialspecularityearth2 = {0.0f, 0.0f, 0.0f, 1.0f};
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_SPECULAR, materialspecularityearth2, 0);
         Gdx.gl11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 0.0f);
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialspecularityearth2, 0);
 
-        float[] materialambientearth2 = {0.0f, 0.0f, 0.0f, 1.0f};
-        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambientearth2, 0);
+        float[] materialdefuse = {1.0f, 1.0f, 1.0f, 1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialdefuse, 0);
 
         Gdx.gl11.glPopMatrix();
 
@@ -394,6 +434,11 @@ public class Assignment3Base implements ApplicationListener
 
 
 
+
+
+        for(Asteroid ast : asteroids){
+            ast.draw();
+        }
 
 
 

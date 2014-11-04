@@ -26,6 +26,8 @@ public class Dodecahedron {
     float radius=1.31f;
     float scale = 1.0f;
 
+    boolean explode = false;
+    boolean killME = false;
 
     public Dodecahedron(Point3D position){
         pen = new Pentagon();
