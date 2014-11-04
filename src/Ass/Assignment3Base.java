@@ -32,7 +32,7 @@ public class Assignment3Base implements ApplicationListener
     Spaceship space;
     Point3D position;
 
-    protected ArrayList<Dodecahedron> astroids;
+    protected ArrayList<Asteroid> asteroids;
     int numastroids = 100;
 
     float speedfactorrot = 2.0f;
@@ -56,20 +56,7 @@ public class Assignment3Base implements ApplicationListener
 
         Gdx.gl11.glEnable(GL11.GL_NORMALIZE);
 
-        astroids = new ArrayList<Dodecahedron>();
-        Dodecahedron tempdodo;
-        for (int ast = 0; ast < numastroids; ast++){
-            tempdodo = new Dodecahedron();
-            tempdodo.setCenter((float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f);
-            //tempdodo.setDirection((float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f);
-            tempdodo.scale = (float) Math.random() * 10.0f;
-            tempdodo.speed = (int)(Math.random() * 5.0f) + 2;
-            if(Math.random()>0.50f)
-                tempdodo.pen.setTex("Textures/LavaAstero2.png");
-           // else if( Math.random() > 0.5f)
-           //     tempdodo.pen.setTex("Textures/pentagon4.png");
-            astroids.add(tempdodo);
-        }
+
 
 
 
@@ -107,8 +94,6 @@ public class Assignment3Base implements ApplicationListener
 
         dodo = new Dodecahedron();
         bobo = new Dodecahedron();
-        bobo.setCenter(5,5,5);
-        dodo.setCenter(-5,-5,-5);
 //        bobo.setDirection(-1, -1, -1);
 //        dodo.setDirection(1,1,1);
         dodo.pen.setTex("Textures/LavaAstero2.png");
@@ -117,12 +102,26 @@ public class Assignment3Base implements ApplicationListener
         Gdx.gl11.glPopMatrix();
       //  ObjLoader loader = new ObjLoader();
       //  model = loader.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle/CityPatrolVehicle.obj"), true);
-        bobo.setDirection(0,0,-1);
-        dodo.setDirection(1,1,0);
 //        bobo.setDirection(-1,-1,-1);
 //        dodo.setDirection(1,1,1);
 
-        particl = new ParticleEffect();
+        particl = new ParticleEffect("Textures/starblue.png");
+
+        asteroids = new ArrayList<Asteroid>();
+        Asteroid tempdodo;
+        for (int ast = 0; ast < numastroids; ast++){
+
+
+            if(Math.random()>0.50f)
+                tempdodo = new Asteroid(dodo);
+            else
+                tempdodo = new Asteroid(bobo);
+            tempdodo.setCenter((float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f);
+            //tempdodo.setDirection((float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f);
+            // else if( Math.random() > 0.5f)
+            //     tempdodo.pen.setTex("Textures/pentagon4.png");
+            asteroids.add(tempdodo);
+        }
 
 
 
@@ -148,15 +147,14 @@ public class Assignment3Base implements ApplicationListener
         float deltaTime = Gdx.graphics.getDeltaTime();
         power = false;
         rotationAngle += 90.0f * deltaTime;
-        bobo.movement();
-        dodo.movement();
 
-        for(Dodecahedron ast : astroids){
+        for(Asteroid ast : asteroids){
             ast.movement();
-            if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= Math.pow((200-ast.scale*2.62f/2),2)){
+            if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= Math.pow((200-ast.radius*2.62f/2),2)){
                ast.moveVector.times(-1);
             }
         }
+
         if(Math.pow(camFirstPerson.eye.x,2)+Math.pow(camFirstPerson.eye.y,2)+Math.pow(camFirstPerson.eye.z,2) >= Math.pow((200-4),2)) {
             camSpeed.times(-1);
         }
@@ -169,8 +167,6 @@ public class Assignment3Base implements ApplicationListener
        // dodo.collision(bobo);
         // can't do this or it won't work
      //  bobo.collision(dodo);
-
-       dodo.collision(bobo);
 
 
 
@@ -341,6 +337,12 @@ public class Assignment3Base implements ApplicationListener
         float[] materialambientsun = {5.0f, 5.0f, 5.0f, 1.0f};
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT, materialambientsun, 0);
 
+        for(Asteroid ast : asteroids){
+            Gdx.gl11.glPushMatrix();
+            ast.draw();
+            Gdx.gl11.glPopMatrix();
+        }
+
 
         sun.setPosition(lightPosition[0],lightPosition[1],lightPosition[2]);
 
@@ -385,12 +387,12 @@ public class Assignment3Base implements ApplicationListener
         //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
         // pen.draw();
         // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
+        Gdx.gl11.glPushMatrix();
         dodo.draw();
         bobo.draw();
+        Gdx.gl11.glPopMatrix();
 
-        for(Dodecahedron ast : astroids){
-            ast.draw();
-        }
+
 
 
 

@@ -31,7 +31,7 @@ public class ParticleEffect
 	Particle[] particles;
 	int particleCount = 1000;
 	
-	public ParticleEffect()
+	public ParticleEffect(String s)
 	{
 			vertexBuffer = BufferUtils.newFloatBuffer(12);
 			vertexBuffer.put(new float[] {-0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f,
@@ -42,7 +42,7 @@ public class ParticleEffect
 			texCoordBuffer.put(new float[] {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f});
 			texCoordBuffer.rewind();
 			
-			tex = new Texture(Gdx.files.internal("Textures/star03.bmp"));
+			tex = particleEffectSetTexture(s);
 			
 			particles = new Particle[particleCount];
 			for(int i = 0; i < particleCount; i++)
@@ -58,6 +58,11 @@ public class ParticleEffect
                     particles[i].timeLived = particles[i].timeToLive;
                 }
             }
+    }
+    public Texture particleEffectSetTexture(String filename){
+
+        return new Texture (Gdx.files.internal(filename));
+
     }
 	
 	public void update(float deltaTime)
@@ -178,7 +183,7 @@ public class ParticleEffect
 
 			Gdx.gl11.glPushMatrix();
 			Gdx.gl11.glTranslatef(particles[i].position.x, particles[i].position.y, particles[i].position.z);
-			Gdx.gl11.glScalef(intensity*0.3f, intensity*0.3f, intensity*0.3f);
+			Gdx.gl11.glScalef(intensity*0.4f, intensity*0.4f, intensity*0.4f);
 			Gdx.gl11.glRotatef(particles[i].orientationX, 1.0f, 0.0f, 0.0f);
 			Gdx.gl11.glRotatef(particles[i].orientationY, 0.0f, 1.0f, 0.0f);
 			Gdx.gl11.glNormal3f(0.0f, 0.0f, -1.0f);
