@@ -19,25 +19,36 @@ public class Dodecahedron {
     Vector3D direction;
     Random rand = new Random();
     float deltaTime ;
-    float Scalefaktor = 0.25f;              //0.25
+    static float Scalefaktor = 0.25f;              //0.25
     protected float explodefactor = 0.0f, explodeScaleFactor = 1.0f, distanceFaktor = 0.0f;
     protected Point3D center;
     int speed =2;
     float radius=1.31f;
+    float scale = 1.0f;
 
 
     public Dodecahedron(Point3D position){
+        pen = new Pentagon();
+        //pen.texCoordBuffer = texCoordBuffer[0];
+        //pen.scaleTexture(Scalefaktor);
         setUpDodoIfNeeded();
         center = position;
     }
 
     public Dodecahedron(){
+        pen = new Pentagon();
+        //pen.texCoordBuffer = texCoordBuffer[0];
+       // pen.scaleTexture(Scalefaktor);
         setUpDodoIfNeeded();
         center = new Point3D(0.0f,0.0f,0.0f);
+        System.out.println("new dodo created");
+
     }
 
     private void setUpDodoIfNeeded(){
         if(!floatBuffersExist) {
+
+            System.out.println("Set up dodo float buffers");
 
             texCoordBuffer[0] = BufferUtils.newFloatBuffer(14);
             texCoordBuffer[0].put(new float[]{0.5f, 0.5f,          //midel    0
@@ -51,7 +62,6 @@ public class Dodecahedron {
 
 
             System.out.println(texCoordBuffer[0].get(2));
-            pen = new Pentagon();
 //            pen.tex = new Texture(Gdx.files.internal("Textures/LavaAstero2.png"));  //Textures/pentagon4.png      Textures/derpasteroidsquadrat.png
             pen.texCoordBuffer = texCoordBuffer[0];
             pen.scaleTexture(Scalefaktor);
@@ -253,6 +263,7 @@ public class Dodecahedron {
         System.out.println(texCoordBufferUp[1].get(2)+" ; "+texCoordBufferUp[1].get(3));
         System.out.println(texCoordBufferUp[1].get(4)+" ; "+texCoordBufferUp[1].get(5));
 */
+            floatBuffersExist=true;
         }
 
 
@@ -261,21 +272,26 @@ public class Dodecahedron {
     private float[] getMiddlePoint(int buff, boolean Up) {
         float sum[] = {0.0f,0.0f};
         if(Up){
-           /* for (int e= 2 ; e < 12; e += 2) {
+            for (int e= 2 ; e < 10; e += 2) {
                 sum[0] += texCoordBufferUp[buff].get(e);
             }
-            for (int e= 1 ; e < 12; e += 2) {
+            for (int e= 1 ; e < 10; e += 2) {
                 sum[1] += texCoordBufferUp[buff].get(e);
             }
-            sum[0] = sum[0]/5;
-            sum[1] = sum[1]/6;
-           */ //return sum;
-       //     sum[0] = (texCoordBufferUp[buff].get(8) + texCoordBufferUp[buff].get(2))/2;
-       //     sum[1] = (texCoordBufferUp[buff].get(11) + texCoordBufferUp[buff].get(5))/2;
-            sum[0] = texCoordBufferUp[buff].get(6) + ((0.31f * Scalefaktor) * (float) Math.cos(rotationangel1) - (-0.30f * Scalefaktor) * (float) Math.sin(rotationangel1));  // 0 x
-            sum[1] = texCoordBufferUp[buff].get(7) + ((0.31f * Scalefaktor) * (float) Math.sin(rotationangel1) + (-0.30f * Scalefaktor) * (float) Math.cos(rotationangel1)); // 0 y
-
-
+            sum[0] = sum[0]/4;
+            sum[1] = sum[1]/4;
+            //return sum;
+            //     sum[0] = (texCoordBufferUp[buff].get(8) + texCoordBufferUp[buff].get(2))/2;
+            //     sum[1] = (texCoordBufferUp[buff].get(11) + texCoordBufferUp[buff].get(5))/2;
+            //sum[0] = texCoordBufferUp[buff].get(6) + ((0.31f * Scalefaktor) * (float) Math.cos(rotationangel1) - (-0.30f * Scalefaktor) * (float) Math.sin(rotationangel1));  // 0 x
+            //sum[1] = texCoordBufferUp[buff].get(7) + ((0.31f * Scalefaktor) * (float) Math.sin(rotationangel1) + (-0.30f * Scalefaktor) * (float) Math.cos(rotationangel1)); // 0 y
+            //if(buff != 5) {
+            //    sum[0] = texCoordBufferUp[buff].get(10) + texCoordBuffer[0].get((5 - buff)*2);
+            //    sum[1] = texCoordBufferUp[buff].get(11) + texCoordBuffer[0].get(((5 - buff)*2)+1);
+            //}else{
+            //    sum[0] = texCoordBufferUp[buff].get(10) + texCoordBuffer[0].get(10);
+            //    sum[1] = texCoordBufferUp[buff].get(11) + texCoordBuffer[0].get(11);
+            //}
             return sum;
         }
         else{
@@ -301,6 +317,7 @@ public class Dodecahedron {
 
         Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(this.center.x,this.center.y,this.center.z);
+        Gdx.gl11.glScalef(scale,scale,scale);
 
 
 
@@ -538,7 +555,7 @@ public class Dodecahedron {
                 ;
             else {
 
-              //  System.out.println("Never get here"+deltaTime);
+                System.out.println("Never get here"+deltaTime);
                 if(direction.z>0)
                     this.center.z +=speed*deltaTime;
                 else
@@ -570,7 +587,7 @@ public class Dodecahedron {
             if(this.direction.addition(asteroid.direction).isNullVector3D()) {
                 this.direction.inverse();
                 asteroid.direction.inverse();
-                System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+                //System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
             }
             else{
                 // fucking rotations
@@ -589,7 +606,7 @@ public class Dodecahedron {
 
 
         direction = new Vector3D(x, y, z);
-        System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
+        //System.out.println("x =" + direction.x + ";y =" + direction.y + ";z =" + direction.z);
         // }
     }
 }

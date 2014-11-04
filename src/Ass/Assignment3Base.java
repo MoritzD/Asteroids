@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL11;
 
+import java.util.ArrayList;
 
 
 public class Assignment3Base implements ApplicationListener
@@ -31,6 +32,9 @@ public class Assignment3Base implements ApplicationListener
     Spaceship space;
     Point3D position;
 
+    protected ArrayList<Dodecahedron> astroids;
+    int numastroids = 100;
+
     float speedfactorrot = 2.0f;
     float speedfactormove = 2.0f;
 
@@ -52,11 +56,25 @@ public class Assignment3Base implements ApplicationListener
 
         Gdx.gl11.glEnable(GL11.GL_NORMALIZE);
 
+        astroids = new ArrayList<Dodecahedron>();
+        Dodecahedron tempdodo;
+        for (int ast = 0; ast < numastroids; ast++){
+            tempdodo = new Dodecahedron();
+            tempdodo.setCenter((float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f,(float)Math.random()*200.0f - 100.0f);
+            tempdodo.setDirection((float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f,(float)Math.random()*4.0f - 2.0f);
+            tempdodo.scale = (float) Math.random() * 5.0f;
+            if(Math.random()>0.50f)
+                tempdodo.pen.setTex("Textures/LavaAstero2.png");
+           // else if( Math.random() > 0.5f)
+           //     tempdodo.pen.setTex("Textures/pentagon4.png");
+            astroids.add(tempdodo);
+        }
+
 
 
         camFirstPerson = new Camera();
         camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 8.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
-        camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 200.0f);
+        camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 400.0f);
 
         camThirdPerson = new Camera();
         camThirdPerson.perspective(50.0f, 1.777778f, 0.01f, 40.0f);
@@ -81,7 +99,7 @@ public class Assignment3Base implements ApplicationListener
         sky = new Sphere(12, 24);
         sky.setTexture("Textures/awsomesky_4096.png");
         sky.setPosition(0, 0, 0);
-        sky.scale(100,100,100);
+        sky.scale(200,200,200);
 
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
@@ -132,6 +150,13 @@ public class Assignment3Base implements ApplicationListener
         bobo.movement();
         dodo.movement();
 
+        for(Dodecahedron ast : astroids){
+            ast.movement();
+            if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= (200-ast.scale*2.62f/2)){
+               // ast.speed.
+            }
+        }
+
 
         particl.update(deltaTime);
 
@@ -139,7 +164,7 @@ public class Assignment3Base implements ApplicationListener
 
        // dodo.collision(bobo);
         // can't do this or it won't work
-       bobo.collision(dodo);
+     //  bobo.collision(dodo);
 
 
 
@@ -289,19 +314,19 @@ public class Assignment3Base implements ApplicationListener
         float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse, 0);
 
-        float[] lightPosition = {0.0f, 0.0f, 15.0f, 1.0f};
+        float[] lightPosition = {0.0f, 0.0f, 15.0f, 0.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition, 0);
 
         float[] lightDiffuse1 = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1, 0);
 
-        float[] lightPosition1 = {-5.0f, -10.0f, -13.0f, 1.0f};
+        float[] lightPosition1 = {-5.0f, -10.0f, -13.0f, 0.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0);
 
         float[] lightDiffuse2 = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, lightDiffuse2, 0);
 
-        float[] lightPosition2 = {5.0f, 10.0f, -5.0f, 1.0f};
+        float[] lightPosition2 = {5.0f, 10.0f, -5.0f, 0.0f};
         Gdx.gl11.glLightfv(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPosition2, 0);
 
         float[] materialDiffusesun = {0.5f, 0.5f, 0.5f, 1.0f};
@@ -356,6 +381,10 @@ public class Assignment3Base implements ApplicationListener
         // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
         dodo.draw();
         bobo.draw();
+
+        for(Dodecahedron ast : astroids){
+            ast.draw();
+        }
 
 
 
