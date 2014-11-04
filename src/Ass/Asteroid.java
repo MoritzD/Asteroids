@@ -17,6 +17,9 @@ public class Asteroid {
     float radius;
     Random rand = new Random();
 
+    float explScalefactor = 1.0f;
+    float explodeFactor = 0.0f;
+
     boolean killME = false;
     boolean explode = false;
 
@@ -29,6 +32,8 @@ public class Asteroid {
     }
 
     public void draw() {
+        dodo.explodefactor = explodeFactor;
+        dodo.explodeScaleFactor = explScalefactor;
 
         Gdx.gl11.glTranslatef(center.x,center.y,center.z);
         Gdx.gl11.glScalef(radius,radius,radius);
@@ -47,15 +52,16 @@ public class Asteroid {
         deltaTime = Gdx.graphics.getDeltaTime() * 0.5f;
 
         if(explode){
-            dodo.explodefactor += 5 * deltaTime;
+            explodeFactor += 5 * deltaTime;
 
-            if(0 < dodo.explodeScaleFactor ) {
-                dodo.explodeScaleFactor -= 2 * deltaTime;
+            if(0 < explScalefactor ) {
+                explScalefactor -= 2 * deltaTime;
                 // Discard object!
-            }else if( dodo.explodeScaleFactor <= 0){
+            }else if( explScalefactor <= 0){
                 killME = true;
             }
         }
+
         if (moveVector == null) {
             float temp1, temp2, temp3;
             temp1 = rand.nextInt(3);
