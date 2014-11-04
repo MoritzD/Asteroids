@@ -422,7 +422,7 @@ public class Assignment3Base implements ApplicationListener
         float[] materialdefuse = {1.0f, 1.0f, 1.0f, 1.0f};
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialdefuse, 0);
 
-        Gdx.gl11.glPopMatrix();
+        //Gdx.gl11.glPopMatrix();
 
         //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
         // pen.draw();
@@ -432,13 +432,6 @@ public class Assignment3Base implements ApplicationListener
         bobo.draw();
         Gdx.gl11.glPopMatrix();
 
-
-
-
-
-        for(Asteroid ast : asteroids){
-            ast.draw();
-        }
 
 
 
