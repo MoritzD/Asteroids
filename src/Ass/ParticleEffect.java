@@ -69,7 +69,7 @@ public class ParticleEffect
 		{
 			if(particles[i].timeLived < particles[i].timeToLive)
 			{
-				particles[i].position.add(Vector3D.mult(deltaTime, particles[i].speed));
+				particles[i].position.add(Vector3D.scale(particles[i].speed,deltaTime));
 				if(particles[i].timeToLive != 0)
 				{
 					particles[i].speed.x = particles[i].speed.x - particles[i].speed.x* (1 - ((particles[i].timeToLive - particles[i].timeLived) / particles[i].timeToLive));
@@ -90,7 +90,14 @@ public class ParticleEffect
 				particles[i].position = new Point3D(0.0f, 0.0f, 0.0f);
 				particles[i].orientationX = (float)Math.random() * 180.0f;
 				particles[i].orientationY = (float)Math.random() * 180.0f;
-			}
+			}else{
+                particles[i].timeLived = 0;
+                particles[i].timeToLive = (float)Math.random() * 1.5f + 0.1f;
+                particles[i].speed = new Vector3D((float)Math.random() - 0.5f, (float)Math.random(), (float)Math.random() - 0.5f);
+                particles[i].position = new Point3D(0.0f, 0.0f, 0.0f);
+                particles[i].orientationX = (float)Math.random() * 180.0f;
+                particles[i].orientationY = (float)Math.random() * 180.0f;
+            }
 		}
 
 	}
