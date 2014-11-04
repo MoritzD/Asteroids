@@ -1,12 +1,11 @@
 package Ass;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 public class ParticleEffect
 {
@@ -69,7 +68,7 @@ public class ParticleEffect
 		{
 			if(particles[i].timeLived < particles[i].timeToLive)
 			{
-				particles[i].position.add(Vector3D.scale(particles[i].speed,deltaTime));
+				particles[i].position.add(Vector3D.scale( particles[i].speed,deltaTime));
 				if(particles[i].timeToLive != 0)
 				{
 					particles[i].speed.x = particles[i].speed.x - particles[i].speed.x* (1 - ((particles[i].timeToLive - particles[i].timeLived) / particles[i].timeToLive));
