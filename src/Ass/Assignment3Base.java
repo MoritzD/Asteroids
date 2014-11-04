@@ -154,11 +154,11 @@ public class Assignment3Base implements ApplicationListener
         for(Dodecahedron ast : astroids){
             ast.movement();
             if(Math.pow(ast.center.x,2)+Math.pow(ast.center.y,2)+Math.pow(ast.center.z,2) >= Math.pow((200-ast.scale*2.62f/2),2)){
-               ast.direction.inverse();
+               ast.moveVector.times(-1);
             }
         }
         if(Math.pow(camFirstPerson.eye.x,2)+Math.pow(camFirstPerson.eye.y,2)+Math.pow(camFirstPerson.eye.z,2) >= Math.pow((200-4),2)) {
-            camSpeed.inverse();
+            camSpeed.times(-1);
         }
 
 

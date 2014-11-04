@@ -25,7 +25,7 @@ public class Spaceship {
         model = loader2.loadObj(Gdx.files.internal("Spaceship/CityPatrolVehicle.obj"), true);
 
         tex = new Texture(Gdx.files.internal("Textures/Red-Digital-Camo1024.png"));//Spaceship/CityPatrolVehicle/Maps/ed1a.png"));
-        tex2 = new Texture(Gdx.files.internal("Spaceship/CityPatrolVehicle/Maps/cp6b.png"));
+
 
     }
 public void drawSpaceship(){
