@@ -11,13 +11,13 @@ import java.util.ArrayList;
 public class Assignment3Base implements ApplicationListener
 {
     Camera camFirstPerson;
-    Camera camTopDown;
+ /*   Camera camTopDown;
     Camera camThirdPerson;
     Hexagon hex;
     Hexagon hex2;
     Hexagon hex3;
     Pentagon pen;
-    Sphere planetEarth;
+   */ Sphere planetEarth;
     Sphere sun;
     Sphere sky;
     Dodecahedron dodo, bobo;
@@ -69,17 +69,17 @@ public class Assignment3Base implements ApplicationListener
         camFirstPerson = new Camera();
         camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 8.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 400.0f);
-
+/*
         camThirdPerson = new Camera();
         camThirdPerson.perspective(50.0f, 1.777778f, 0.01f, 40.0f);
 
         camTopDown = new Camera();
         camTopDown.perspective(40.0f, 1.777778f, 5.0f, 20.0f);
-
-        hex = new Hexagon();
-        hex2 = new Hexagon();
-        hex3 = new Hexagon();
-        pen = new Pentagon();
+*/
+ //       hex = new Hexagon();
+ //       hex2 = new Hexagon();
+ //       hex3 = new Hexagon();
+ //       pen = new Pentagon();
         camSpeed = new Vector3D(0,0,0);
         camRotation = new Vector3D(0,0,0);
 
@@ -423,7 +423,7 @@ public class Assignment3Base implements ApplicationListener
             Gdx.gl11.glPopMatrix();
         }
 
-
+/*
         sun.setPosition(lightPosition[0],lightPosition[1],lightPosition[2]);
 
         sun.draw();
@@ -431,7 +431,7 @@ public class Assignment3Base implements ApplicationListener
         sun.draw();
         sun.setPosition((int)lightPosition2[0],(int)lightPosition2[1],(int)lightPosition2[2]);
         sun.draw();
-
+*/
         //bo.draw();
 
         Gdx.gl11.glPushMatrix();
