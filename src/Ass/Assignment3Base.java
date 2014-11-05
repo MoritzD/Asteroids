@@ -154,17 +154,35 @@ public class Assignment3Base implements ApplicationListener
 
         for (int i1 = 0; i1 < asteroids.size(); i1++) {
             Asteroid ast = asteroids.get(i1);
+            if(1+i1<asteroids.size()) {
+                Asteroid ast2 = asteroids.get(i1+1);
+                ast.collision(ast2);
+
+
+            }
+
             ast.movement();
-            if (Math.pow(ast.center.x, 2) + Math.pow(ast.center.y, 2) + Math.pow(ast.center.z, 2) >= Math.pow((200 - ast.radius * 2.62f / 2), 2)) {
+            double astSidesSquared=Math.pow(ast.center.x, 2) + Math.pow(ast.center.y, 2) + Math.pow(ast.center.z, 2);
+            double astRadi=ast.radius*2.62f/2;
+            if (astSidesSquared >= Math.pow((200 - astRadi), 2)||
+                    Math.pow(ast.center.x-planetEarth.getPosition().x, 2) +
+                    Math.pow(ast.center.y-planetEarth.getPosition().y, 2) +
+                    Math.pow(ast.center.z-planetEarth.getPosition().z, 2)
+                     <= Math.pow((planetEarth.getScale()+astRadi),2)) {
                 ast.moveVector.times(-1);
             }
             if (ast.killME) {
                 asteroids.remove(i1);
 
             }
+
         }
 
-        if(Math.pow(camFirstPerson.eye.x,2)+Math.pow(camFirstPerson.eye.y,2)+Math.pow(camFirstPerson.eye.z,2) >= Math.pow((200-4),2)) {
+        if(Math.pow(camFirstPerson.eye.x,2)+Math.pow(camFirstPerson.eye.y,2)+Math.pow(camFirstPerson.eye.z,2) >= Math.pow((200-4),2)||
+                Math.pow(camFirstPerson.eye.x-planetEarth.getPosition().x, 2) +
+                        Math.pow(camFirstPerson.eye.y-planetEarth.getPosition().y, 2) +
+                        Math.pow(camFirstPerson.eye.z-planetEarth.getPosition().z, 2)
+                        <= Math.pow((planetEarth.getScale()+4),2)) {
             camSpeed.times(-1);
         }
 

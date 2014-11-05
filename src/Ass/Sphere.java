@@ -129,6 +129,12 @@ public class Sphere {
         tex = new Texture(Gdx.files.internal(fileLocation));
 
     }
+    public int getScale(){
+        return (int)scale.x;
+    }
+    public Point3D getPosition(){
+        return new Point3D(position.x,position.y,position.z);
+    }
 }
 
 

@@ -6,6 +6,13 @@ import java.util.Random;
 
 /**
  * Created by Alexander on 04/11/2014.
+ *
+ * Asteroids is a way of creating hundreds of dodecahedrons in just a few seconds because now, we simply draw the same
+ * object over and over. Instead of creating new objects each time... Stay in school kids...
+ * Also I like this copy pasta... Want some more? copy pasta.... Also I like this copy pasta...
+ * Want some more? copy pasta... Also I like this copy pasta...
+ *
+ * Because in fact all the methods here already exsisted in Dodecahedron because it was our main building class.
  */
 public class Asteroid {
 
@@ -134,18 +141,19 @@ public class Asteroid {
         }
     }
 
-    public void collisionHandling(Dodecahedron ast) {
+    public void collisionHandling() {
 
         this.moveVector.times(-1);
+        System.out.println("a collision occured");
     }
 
-    public void collision(Dodecahedron ast) {
+    public void collision(Asteroid ast) {
 
         if ((this.center.x - ast.center.x) * (this.center.x - ast.center.x) +
                 (this.center.y - ast.center.x) * (this.center.y - ast.center.x) +
                 (this.center.z - ast.center.z) * (this.center.z - ast.center.z)
                 <= (this.radius + ast.radius) * (this.radius + ast.radius)) {
-            collisionHandling(ast);
+            collisionHandling();
         }
 
     }

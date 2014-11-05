@@ -43,14 +43,14 @@ public class Dodecahedron {
        // pen.scaleTexture(Scalefaktor);
         setUpDodoIfNeeded();
         center = new Point3D(0.0f,0.0f,0.0f);
-        System.out.println("new dodo created");
+        System.out.println("new genericDodecahedron created");
 
     }
 
     private void setUpDodoIfNeeded(){
         if(!floatBuffersExist) {
 
-            System.out.println("Set up dodo float buffers");
+            System.out.println("Set up genericDodecahedron float buffers");
 
             texCoordBuffer[0] = BufferUtils.newFloatBuffer(14);
             texCoordBuffer[0].put(new float[]{0.5f, 0.5f,          //midel    0
@@ -610,7 +610,7 @@ public class Dodecahedron {
 ////                }
 ////
 ////
-////                // fucking rotations
+////                //  rotations
 ////            }
 ////        }
 //    }
