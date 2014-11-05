@@ -143,8 +143,12 @@ public class Asteroid {
 
     public void collisionHandling() {
 
-        this.moveVector.times(-1);
-        System.out.println("a collision occured");
+        try {
+            this.moveVector.times(-1);
+            System.out.println("a collision occured");
+        }catch(NullPointerException e){       // can happen when astroid gets distroid, but we dont care
+            System.out.println(" Nullpointer exception in Collision Handling");
+        }
     }
 
     public void collision(Asteroid ast) {

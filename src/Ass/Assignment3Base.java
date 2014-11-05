@@ -364,7 +364,7 @@ public class Assignment3Base implements ApplicationListener
                     ass.explode();
                     try {
                         shots.remove(i);
-                    } catch (IndexOutOfBoundsException e) {
+                    } catch (IndexOutOfBoundsException e) {     // can happen in some cases when several shots hit a Astroid; can safely be ignored
                         System.out.println("out of bounce at remove shot");
                     }
                     if (!BabyAsteroidsHelper.contains(asteroids.get(i1))) {
