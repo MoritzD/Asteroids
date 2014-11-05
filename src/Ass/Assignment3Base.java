@@ -34,6 +34,7 @@ public class Assignment3Base implements ApplicationListener
     Point3D position;
 
     protected ArrayList<Asteroid> asteroids;
+    protected ArrayList<Asteroid> BabyAsteroidsHelper;
     protected ArrayList<Lazers> shots;
 
     int numastroids = 100;
@@ -61,6 +62,7 @@ public class Assignment3Base implements ApplicationListener
 
 
         shots = new ArrayList<Lazers>();
+        BabyAsteroidsHelper = new ArrayList<Asteroid>();
 
 
 
@@ -154,11 +156,26 @@ public class Assignment3Base implements ApplicationListener
 
         for (int i1 = 0; i1 < asteroids.size(); i1++) {
             Asteroid ast = asteroids.get(i1);
+            if(ast.radius < 2){
+                asteroids.remove(i1);
+            }
             ast.movement();
             if (Math.pow(ast.center.x, 2) + Math.pow(ast.center.y, 2) + Math.pow(ast.center.z, 2) >= Math.pow((200 - ast.radius * 2.62f / 2), 2)) {
                 ast.moveVector.times(-1);
             }
             if (ast.killME) {
+               /* Asteroid ass = new Asteroid(ast.dodo);
+                ass.setCenter(ast.center.x,ast.center.y,ast.center.z);
+                ass.radius = ast.radius/2;
+                asteroids.add(ass);
+
+                ass = new Asteroid(ast.dodo);
+                ass.setCenter(ast.center.x,ast.center.y,ast.center.z);
+                ass.radius = ast.radius/2;
+                asteroids.add(ass);
+*/
+
+
                 asteroids.remove(i1);
 
             }
@@ -311,6 +328,24 @@ public class Assignment3Base implements ApplicationListener
             dodo.distanceFaktor = - Math.abs(2 * (float) Math.sin(acc));
             acc += 2*deltaTime;
         }
+        for(Asteroid ass : BabyAsteroidsHelper ){
+            Asteroid aste;
+            if(Math.random() > 0.5f) {
+                aste = new Asteroid(ass.dodo);
+                aste.setCenter(ass.center.x, ass.center.y, ass.center.z);
+                aste.radius = ass.radius / 2;
+                if(aste.radius > 2)
+                    asteroids.add(aste);
+            }
+            if(Math.random() > 0.5f) {
+                aste = new Asteroid(ass.dodo);
+                aste.setCenter(ass.center.x, ass.center.y, ass.center.z);
+                aste.radius = ass.radius / 2;
+                if(aste.radius > 2)
+                    asteroids.add(aste);
+            }
+        }
+        BabyAsteroidsHelper.clear();
         for (int i = 0; i < shots.size(); i++) {
             Lazers sh = shots.get(i);
 
@@ -318,10 +353,18 @@ public class Assignment3Base implements ApplicationListener
             if (Math.pow(sh.position.x, 2) + Math.pow(sh.position.y, 2) + Math.pow(sh.position.z, 2) >= Math.pow((200 - 1), 2)) {
                 shots.remove(i);
             }
-            for (Asteroid ass : asteroids) {
-                if (Math.pow(ass.center.x - sh.position.x, 2) + Math.pow(ass.center.y - sh.position.y, 2) + Math.pow(ass.center.z - sh.position.z, 2) <= Math.pow((2.62f/2)*ass.radius, 2)) {
+            for (int i1 = 0; i1 < asteroids.size(); i1++) {
+                Asteroid ass = asteroids.get(i1);
+                if (Math.pow(ass.center.x - sh.position.x, 2) + Math.pow(ass.center.y - sh.position.y, 2) + Math.pow(ass.center.z - sh.position.z, 2) <= Math.pow((2.62f / 2) * ass.radius, 2)) {
                     ass.explode();
-                    shots.remove(i);
+                    try {
+                        shots.remove(i);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("out of bounce at remove shot");
+                    }
+                    if (!BabyAsteroidsHelper.contains(asteroids.get(i1))) {
+                        BabyAsteroidsHelper.add(asteroids.get(i1));
+                    }
                 }
             }
         }
