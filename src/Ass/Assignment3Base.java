@@ -475,11 +475,11 @@ public class Assignment3Base implements ApplicationListener
         //Gdx.gl11.glScalef(5.0f,0.5f,1.0f);
         // pen.draw();
         // Gdx.gl11.glScalef(10.0f,10.0f,10.0f);
-        Gdx.gl11.glPushMatrix();
+       /* Gdx.gl11.glPushMatrix();
         dodo.draw();
         bobo.draw();
         Gdx.gl11.glPopMatrix();
-
+*/
 
 
 
