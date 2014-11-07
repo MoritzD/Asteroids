@@ -11,21 +11,23 @@ import java.util.ArrayList;
 public class Assignment3Base implements ApplicationListener
 {
     Camera camFirstPerson;
- /*   Camera camTopDown;
+    Camera camTopDown;
     Camera camThirdPerson;
     Hexagon hex;
     Hexagon hex2;
     Hexagon hex3;
     Pentagon pen;
-   */ Sphere planetEarth;
+    Sphere planetEarth;
     Sphere sun;
     Sphere sky;
+    LifeBox lifebox;
     Dodecahedron dodo, bobo;
     Box bo;
     float acc = 0;
     private float rotationAngle;
 
     ParticleEffect particl;
+    ParticleEffect thursters;
     boolean power = false;
     boolean wjusttouched = false;
     boolean oldSpace = false;
@@ -69,17 +71,17 @@ public class Assignment3Base implements ApplicationListener
         camFirstPerson = new Camera();
         camFirstPerson.lookAt(new Point3D(-1.0f, -2.0f, 8.0f), new Point3D(0.0f, 0.0f, 0.0f), new Vector3D(0.0f, 1.0f, 0.0f));
         camFirstPerson.perspective(90.0f, 1.777778f, 0.1f, 400.0f);
-/*
+
         camThirdPerson = new Camera();
         camThirdPerson.perspective(50.0f, 1.777778f, 0.01f, 40.0f);
 
         camTopDown = new Camera();
         camTopDown.perspective(40.0f, 1.777778f, 5.0f, 20.0f);
-*/
- //       hex = new Hexagon();
- //       hex2 = new Hexagon();
- //       hex3 = new Hexagon();
- //       pen = new Pentagon();
+
+        hex = new Hexagon();
+        hex2 = new Hexagon();
+        hex3 = new Hexagon();
+        pen = new Pentagon();
         camSpeed = new Vector3D(0,0,0);
         camRotation = new Vector3D(0,0,0);
 
@@ -94,6 +96,7 @@ public class Assignment3Base implements ApplicationListener
         sky.setTexture("Textures/awsomesky_4096.png");
         sky.setPosition(0, 0, 0);
         sky.scale(200,200,200);
+        lifebox = new LifeBox();
 
 
         bo=new Box(new Point3D(0,0,0),new Vector3D(1.0f,1.0f,1.0f),new float[] {1.0f,1.0f,0.0f,0.0f},false);
@@ -159,8 +162,8 @@ public class Assignment3Base implements ApplicationListener
             if(ast.radius < 2){
                 asteroids.remove(i1);
             }
-            if(1+i1<asteroids.size()) {
-                Asteroid ast2 = asteroids.get(i1+1);
+            for(Asteroid ast2:asteroids){
+                if(ast2 != ast)
                 ast.collision(ast2);
 
 
@@ -169,12 +172,19 @@ public class Assignment3Base implements ApplicationListener
             ast.movement();
             double astSidesSquared=Math.pow(ast.center.x, 2) + Math.pow(ast.center.y, 2) + Math.pow(ast.center.z, 2);
             double astRadi=ast.radius*2.62f/2;
-            if (astSidesSquared >= Math.pow((200 - astRadi), 2)||
-                    Math.pow(ast.center.x-planetEarth.getPosition().x, 2) +
+            double astEarthRelationshipSqrd = Math.pow(ast.center.x-planetEarth.getPosition().x, 2) +
                     Math.pow(ast.center.y-planetEarth.getPosition().y, 2) +
-                    Math.pow(ast.center.z-planetEarth.getPosition().z, 2)
-                     <= Math.pow((planetEarth.getScale()+astRadi),2)) {
+                    Math.pow(ast.center.z-planetEarth.getPosition().z, 2);
+            if (astSidesSquared >= Math.pow((200 - astRadi), 2)||
+                astEarthRelationshipSqrd <= Math.pow((planetEarth.getScale()+astRadi),2)) {
+                    ast.moveVector.times(-1);
+            }
+            if(Math.pow(camFirstPerson.eye.x+5-ast.center.x,2)+Math.pow(camFirstPerson.eye.y-1.5f-ast.center.y,2)
+                    +Math.pow(camFirstPerson.eye.z-2.0f-ast.center.z,2)<=Math.pow(astRadi+2,2)){
+                System.out.println("An asteroid just collided with your ship!");
                 ast.moveVector.times(-1);
+                camSpeed.times(-1);
+
             }
             if (ast.killME) {
                 asteroids.remove(i1);
@@ -423,7 +433,7 @@ public class Assignment3Base implements ApplicationListener
             Gdx.gl11.glPopMatrix();
         }
 
-/*
+
         sun.setPosition(lightPosition[0],lightPosition[1],lightPosition[2]);
 
         sun.draw();
@@ -431,7 +441,7 @@ public class Assignment3Base implements ApplicationListener
         sun.draw();
         sun.setPosition((int)lightPosition2[0],(int)lightPosition2[1],(int)lightPosition2[2]);
         sun.draw();
-*/
+
         //bo.draw();
 
         Gdx.gl11.glPushMatrix();
@@ -516,10 +526,17 @@ public class Assignment3Base implements ApplicationListener
 
         Gdx.gl11.glMultMatrixf(matrix, 0);
 
+//            Gdx.gl11.glPushMatrix();
+//                Gdx.glu.gluOrtho2D(Gdx.gl10, 0, 100, 0, 100);
+//            Gdx.gl11.glScalef(0.1f,0.1f,0.1f);
+//            lifebox.drawLife();
+//            Gdx.gl11.glPopMatrix();
+
         Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(5.0f, -1.5f, -2.0f);      //2.0
         space.drawSpaceship();
         Gdx.gl11.glPopMatrix();
+
 
         Gdx.gl11.glPushMatrix();
         Gdx.gl11.glTranslatef(0.0f, -0.4f, -0.52f);     //0.52
@@ -572,11 +589,6 @@ public class Assignment3Base implements ApplicationListener
         // TODO Auto-generated method stub
 
     }
-    public void SpaceshipPos(float x, float y, float z ){
 
-        position = new Point3D(x,y,z);
-
-
-    }
 
 }

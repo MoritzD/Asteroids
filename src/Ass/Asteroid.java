@@ -145,7 +145,7 @@ public class Asteroid {
 
         try {
             this.moveVector.times(-1);
-            System.out.println("a collision occured");
+
         }catch(NullPointerException e){       // can happen when astroid gets distroid, but we dont care
             System.out.println(" Nullpointer exception in Collision Handling");
         }

@@ -13,6 +13,8 @@ public class ParticleEffect
 	FloatBuffer texCoordBuffer;
 	float rotationAngle = 0;
     Point3D pos = new Point3D(0.0f,0.0f,0.0f);
+    float minTimeToLive=0.5f, maxTimeToLive=0.8f;
+    int nbrOfPart = 1000;
 
     boolean burning = false;
 	
@@ -29,7 +31,6 @@ public class ParticleEffect
 	}
 	
 	Particle[] particles;
-	int particleCount = 1000;
 	
 	public ParticleEffect(String s)
 	{
@@ -43,13 +44,14 @@ public class ParticleEffect
 			texCoordBuffer.rewind();
 			
 			tex = particleEffectSetTexture(s);
+
 			
-			particles = new Particle[particleCount];
-			for(int i = 0; i < particleCount; i++)
+			particles = new Particle[nbrOfPart];
+			for(int i = 0; i < nbrOfPart; i++)
 			{
 				particles[i] = new Particle();
                     particles[i].timeLived = 0;
-                    particles[i].timeToLive = (float) Math.random() * 0.3f + 0.5f;
+                    particles[i].timeToLive = (float) Math.random() * maxTimeToLive-minTimeToLive + minTimeToLive;
                     particles[i].speed = new Vector3D((float) Math.random() - 0.5f, (float) Math.random(), (float) Math.random() - 0.5f);
                     particles[i].position = new Point3D(0.0f, 0.0f, 0.0f);
                     particles[i].orientationX = (float) Math.random() * 180.0f;
@@ -69,7 +71,7 @@ public class ParticleEffect
 	{
 
 
-		for(int i = 0; i < particleCount; i++)
+		for(int i = 0; i < nbrOfPart; i++)
 		{
 			if(particles[i].timeLived < particles[i].timeToLive)
 			{
@@ -106,9 +108,9 @@ public class ParticleEffect
 
 	}
     public void reset(){
-        for(int i = 0; i < particleCount/2; i++)
+        for(int i = 0; i < nbrOfPart /2; i++)
         {
-            particles[i] = new Particle();
+
             particles[i].timeLived = (float)Math.random()*0.9f;
             particles[i].timeToLive = (float)Math.random() * 1.5f + 0.1f;
             particles[i].speed = new Vector3D((float)Math.random() - 0.5f, (float)Math.random(), (float)Math.random() - 0.5f);
@@ -116,9 +118,9 @@ public class ParticleEffect
             particles[i].orientationX = (float)Math.random() * 180.0f;
             particles[i].orientationY = (float)Math.random() * 180.0f;
         }
-        for(int i = particleCount/2; i < particleCount; i++)
+        for(int i = nbrOfPart /2; i < nbrOfPart; i++)
         {
-            particles[i] = new Particle();
+
             particles[i].timeLived = (float)Math.random()*0.5f; //(float)Math.random()*0.2f + 0.3f;
             particles[i].timeToLive = (float)Math.random() * 1.5f + 0.4f; //(float)Math.random() * 0.3f;
             particles[i].speed = new Vector3D((float)Math.random() - 0.5f, (float)Math.random(), (float)Math.random() - 0.5f);
@@ -160,7 +162,7 @@ public class ParticleEffect
 
         Gdx.gl11.glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
 
-		for(int i = 0; i < particleCount; i++)
+		for(int i = 0; i < nbrOfPart; i++)
 		{
 
 			float intensity;
