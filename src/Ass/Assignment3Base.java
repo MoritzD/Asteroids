@@ -39,7 +39,7 @@ public class Assignment3Base implements ApplicationListener
     protected ArrayList<Asteroid> BabyAsteroidsHelper;
     protected ArrayList<Lazers> shots;
 
-    int numastroids = 100;
+    int numastroids = 150;
 
     float speedfactorrot = 2.0f;
     float speedfactormove = 2.0f;
